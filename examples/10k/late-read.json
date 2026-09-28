@@ -1,0 +1,17 @@
+{
+  "id": "obs_16",
+  "entrant": "ent_cy",
+  "at": {
+    "point": "km-5",
+    "along_m": 5000
+  },
+  "kind": "punched",
+  "t": "2027-05-02T07:25:40.000Z",
+  "quantity_name": null,
+  "quantity_value": null,
+  "flags": [],
+  "source": "transponder",
+  "device": "dev_km5_backup",
+  "confidence": 1,
+  "supersedes": null
+}

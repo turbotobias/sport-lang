@@ -1,0 +1,72 @@
+[
+  {
+    "id": "half-flat",
+    "name": "Flat half marathon",
+    "race": "synthetic",
+    "country": "ZZ",
+    "discipline": "road",
+    "distance_m": 21334,
+    "elevation_gain_m": 0,
+    "points": 317
+  },
+  {
+    "id": "half-hilly",
+    "name": "Hilly half marathon",
+    "race": "synthetic",
+    "country": "ZZ",
+    "discipline": "road",
+    "distance_m": 20879,
+    "elevation_gain_m": 501,
+    "points": 461
+  },
+  {
+    "id": "marathon",
+    "name": "Marathon",
+    "race": "synthetic",
+    "country": "ZZ",
+    "discipline": "road",
+    "distance_m": 42053,
+    "elevation_gain_m": 280,
+    "points": 297
+  },
+  {
+    "id": "trail-50k",
+    "name": "50 km trail loop",
+    "race": "synthetic",
+    "country": "ZZ",
+    "discipline": "trail",
+    "distance_m": 49178,
+    "elevation_gain_m": 2100,
+    "points": 159
+  },
+  {
+    "id": "ride-500k",
+    "name": "500 km ride",
+    "race": "synthetic",
+    "country": "ZZ",
+    "discipline": "cycling",
+    "distance_m": 497396,
+    "elevation_gain_m": 9399,
+    "points": 533
+  },
+  {
+    "id": "loop-6720",
+    "name": "6.72 km loop",
+    "race": "synthetic",
+    "country": "ZZ",
+    "discipline": "trail",
+    "distance_m": 6722,
+    "elevation_gain_m": 79,
+    "points": 75
+  },
+  {
+    "id": "road-44k",
+    "name": "44 km road course",
+    "race": "synthetic",
+    "country": "ZZ",
+    "discipline": "road",
+    "distance_m": 44005,
+    "elevation_gain_m": 150,
+    "points": 110
+  }
+]

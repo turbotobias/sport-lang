@@ -1,0 +1,412 @@
+{
+  "name": "orienteering-any-order-and-a-missing-punch",
+  "why": "`controls` with `in_order: false`, a score course: every control needs a punch and the order is free. Punching c3, c1, c2 is clean. Missing c2 is a mispunch and disqualifies. So is being read at c2 as `passed` rather than `punched` — in any order the kind asks for a punch at each control, where in order it asks only to be at each, in sequence.",
+  "document": {
+    "type": "FeatureCollection",
+    "sport:version": 1,
+    "sport:id": "crs_score",
+    "sport:event": "evt_conformance",
+    "sport:way": null,
+    "sport:name": "Conformance score course",
+    "sport:dialects": ["orienteering@1"],
+    "sport:measure": {
+      "distance_m": null,
+      "distance_method": null,
+      "stated_m": null,
+      "certified_m": null,
+      "ascent_m": null,
+      "descent_m": null,
+      "elevation_source": null,
+      "elevation_smoothing": null,
+      "ascent_threshold_m": null
+    },
+    "sport:provenance": [],
+    "sport:path": [
+      {
+        "line": "ln_1",
+        "from_m": 0,
+        "to_m": 4000,
+        "repeat": 1
+      }
+    ],
+    "sport:rules": [
+      {
+        "id": "rul_controls",
+        "dialect": "orienteering@1",
+        "kind": "controls",
+        "ordinal": 0,
+        "at": null,
+        "params": {
+          "controls": [
+            {
+              "point": "c1",
+              "along_m": 800
+            },
+            {
+              "point": "c2",
+              "along_m": 1900
+            },
+            {
+              "point": "c3",
+              "along_m": 3100
+            }
+          ],
+          "in_order": false
+        }
+      }
+    ],
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "line",
+          "id": "ln_1",
+          "polyline": null
+        },
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [0.5, 0.5],
+            [0.5, 0.51]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "start",
+          "kind": "start",
+          "name": "Start",
+          "along_m": 0
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "c1",
+          "kind": "control",
+          "name": null,
+          "along_m": 800
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "c2",
+          "kind": "control",
+          "name": null,
+          "along_m": 1900
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "c3",
+          "kind": "control",
+          "name": null,
+          "along_m": 3100
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "finish",
+          "kind": "finish",
+          "name": "Finish",
+          "along_m": 4000
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      }
+    ]
+  },
+  "log": [
+    {
+      "id": "obs_01",
+      "entrant": "ent_permuted",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-09-12T10:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_02",
+      "entrant": "ent_missing",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-09-12T10:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_03",
+      "entrant": "ent_passed",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-09-12T10:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_04",
+      "entrant": "ent_permuted",
+      "at": {
+        "point": "c3",
+        "along_m": 3100
+      },
+      "kind": "punched",
+      "t": "2027-09-12T10:10:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_05",
+      "entrant": "ent_missing",
+      "at": {
+        "point": "c1",
+        "along_m": 800
+      },
+      "kind": "punched",
+      "t": "2027-09-12T10:08:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_06",
+      "entrant": "ent_passed",
+      "at": {
+        "point": "c1",
+        "along_m": 800
+      },
+      "kind": "punched",
+      "t": "2027-09-12T10:07:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_07",
+      "entrant": "ent_passed",
+      "at": {
+        "point": "c2",
+        "along_m": 1900
+      },
+      "kind": "passed",
+      "t": "2027-09-12T10:15:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_08",
+      "entrant": "ent_permuted",
+      "at": {
+        "point": "c1",
+        "along_m": 800
+      },
+      "kind": "punched",
+      "t": "2027-09-12T10:18:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_09",
+      "entrant": "ent_missing",
+      "at": {
+        "point": "c3",
+        "along_m": 3100
+      },
+      "kind": "punched",
+      "t": "2027-09-12T10:20:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_10",
+      "entrant": "ent_passed",
+      "at": {
+        "point": "c3",
+        "along_m": 3100
+      },
+      "kind": "punched",
+      "t": "2027-09-12T10:22:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_11",
+      "entrant": "ent_permuted",
+      "at": {
+        "point": "c2",
+        "along_m": 1900
+      },
+      "kind": "punched",
+      "t": "2027-09-12T10:25:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_12",
+      "entrant": "ent_missing",
+      "at": {
+        "point": "finish",
+        "along_m": 4000
+      },
+      "kind": "finished",
+      "t": "2027-09-12T10:30:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_13",
+      "entrant": "ent_passed",
+      "at": {
+        "point": "finish",
+        "along_m": 4000
+      },
+      "kind": "finished",
+      "t": "2027-09-12T10:32:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_14",
+      "entrant": "ent_permuted",
+      "at": {
+        "point": "finish",
+        "along_m": 4000
+      },
+      "kind": "finished",
+      "t": "2027-09-12T10:35:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    }
+  ],
+  "expect": [
+    {
+      "entrant": "ent_permuted",
+      "standing": "clean",
+      "total_ms": 2100000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 1
+    },
+    {
+      "entrant": "ent_missing",
+      "standing": "disqualified",
+      "total_ms": 1800000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 1
+    },
+    {
+      "entrant": "ent_passed",
+      "standing": "disqualified",
+      "total_ms": 1920000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 1
+    }
+  ]
+}

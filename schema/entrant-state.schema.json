@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/turbotobias/sport-lang/main/schema/entrant-state.schema.json",
+  "title": "sport-lang entrant state",
+  "description": "One entrant’s day as an engine answers it (SPEC.md §4): what the rules made of the log, and never a placing. A finisher has `finished_at`; an entrant who started and did not finish has `started_at` and no `finished_at`, and `withdrew` says whether they said so; an entrant who never started is absent, because an engine’s entrants are the log’s. `total_ms` of a non-finisher runs to their last read and is not a time to rank. `applied` is every rule that fired, with its sentence. Generated from ts/src/fold.ts by ts/scripts/make-schema.ts; do not edit by hand.",
+  "type": "object",
+  "properties": {
+    "entrant": {
+      "$ref": "#/$defs/EntrantId"
+    },
+    "standing": {
+      "type": "string",
+      "enum": ["clean", "penalised", "gated", "disqualified"]
+    },
+    "started_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{3})?Z$",
+          "description": "An instant in UTC: `2026-08-14T16:48:00.000Z`. Milliseconds optional, offset always `Z`, and a day that exists — which the pattern alone cannot check (SPEC.md §2.3)."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The first `started`, or null: never seen starting."
+    },
+    "finished_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{3})?Z$",
+          "description": "An instant in UTC: `2026-08-14T16:48:00.000Z`. Milliseconds optional, offset always `Z`, and a day that exists — which the pattern alone cannot check (SPEC.md §2.3)."
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "The last `finished`, or null: not (yet) a finisher. On a lapped course every lap line is a `finished`, so a finisher there is one whose `laps` is the number of laps."
+    },
+    "withdrew": {
+      "type": "boolean",
+      "description": "Whether a `withdrew` was observed. A fact, not a standing."
+    },
+    "total_ms": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Moving time plus every penalty, to `finished_at` — or to the last read when there is none, so a non-finisher’s total is not a time to rank. Null when never seen starting."
+    },
+    "adjustment_ms": {
+      "type": "number",
+      "description": "The sum of every `adjust_time` that fired."
+    },
+    "neutralised_ms": {
+      "type": "number",
+      "description": "Time the document took off the clock (`neutralise`)."
+    },
+    "laps": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "`finished` observations: one per lap line crossed, 1 for a finisher of a one-lap course."
+    },
+    "punches": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "`punched` observations."
+    },
+    "awards": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "classes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "dimension": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": ["dimension", "value"],
+        "additionalProperties": true
+      },
+      "description": "Each `classify` that fired, the latest per dimension."
+    },
+    "applied": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id_rule": {
+            "$ref": "#/$defs/RuleId"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "sentence": {
+            "type": "string"
+          },
+          "times": {
+            "type": "number"
+          },
+          "added_ms": {
+            "type": "number"
+          }
+        },
+        "required": ["id_rule", "kind", "sentence", "times", "added_ms"],
+        "additionalProperties": true
+      },
+      "description": "Every rule that fired, in the order it fired, with its sentence: the reason, in words."
+    }
+  },
+  "required": [
+    "entrant",
+    "standing",
+    "started_at",
+    "finished_at",
+    "withdrew",
+    "total_ms",
+    "adjustment_ms",
+    "neutralised_ms",
+    "laps",
+    "punches",
+    "awards",
+    "classes",
+    "applied"
+  ],
+  "additionalProperties": true,
+  "$defs": {
+    "EntrantId": {
+      "type": "string",
+      "description": "One competitor the fold judges"
+    },
+    "RuleId": {
+      "type": "string",
+      "description": "One rule sentence"
+    }
+  }
+}

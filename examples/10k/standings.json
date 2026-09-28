@@ -1,0 +1,47 @@
+[
+  {
+    "entrant": "ent_ana",
+    "standing": "clean",
+    "total_ms": 2790000,
+    "adjustment_ms": 0,
+    "awards": ["sub-50"],
+    "laps": 1,
+    "sentences": ["Finishing inside 50:00 qualifies for sub-50."]
+  },
+  {
+    "entrant": "ent_ben",
+    "standing": "gated",
+    "total_ms": 5100000,
+    "adjustment_ms": 0,
+    "awards": [],
+    "laps": 1,
+    "sentences": ["The day ends for anyone reaching km-5 after 07:40."]
+  },
+  {
+    "entrant": "ent_cy",
+    "standing": "penalised",
+    "total_ms": 3240000,
+    "adjustment_ms": 120000,
+    "awards": [],
+    "laps": 1,
+    "sentences": ["Missing km-5 costs 2:00."]
+  },
+  {
+    "entrant": "ent_dee",
+    "standing": "clean",
+    "total_ms": 2880000,
+    "adjustment_ms": 0,
+    "awards": ["sub-50"],
+    "laps": 1,
+    "sentences": ["Finishing inside 50:00 qualifies for sub-50."]
+  },
+  {
+    "entrant": "ent_eve",
+    "standing": "disqualified",
+    "total_ms": 3300000,
+    "adjustment_ms": 0,
+    "awards": [],
+    "laps": 1,
+    "sentences": ["Taking outside assistance ends the day."]
+  }
+]

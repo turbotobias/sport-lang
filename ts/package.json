@@ -1,0 +1,72 @@
+{
+  "name": "sport-lang",
+  "version": "0.1.0",
+  "description": "A race's rules as data: a course document, an observation log, and a deterministic fold that says what happened to every entrant.",
+  "keywords": [
+    "endurance",
+    "geojson",
+    "race",
+    "results",
+    "rules",
+    "sport",
+    "timing"
+  ],
+  "homepage": "https://github.com/turbotobias/sport-lang#readme",
+  "bugs": "https://github.com/turbotobias/sport-lang/issues",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/turbotobias/sport-lang.git",
+    "directory": "ts"
+  },
+  "files": [
+    "dist",
+    "src",
+    "LICENSE",
+    "NOTICE",
+    "README.md"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json",
+    "./packs/*": "./src/packs/*.ts",
+    "./*": "./src/*.ts"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./package.json": "./package.json",
+      "./packs/*": {
+        "types": "./dist/packs/*.d.ts",
+        "default": "./dist/packs/*.js"
+      },
+      "./*": {
+        "types": "./dist/*.d.ts",
+        "default": "./dist/*.js"
+      }
+    }
+  },
+  "scripts": {
+    "check": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "build": "node scripts/pack.mjs clean && tsc -p tsconfig.build.json",
+    "prepublishOnly": "tsc -p tsconfig.json --noEmit && vitest run",
+    "prepack": "node scripts/pack.mjs clean && tsc -p tsconfig.build.json && node scripts/pack.mjs pack",
+    "postpack": "node scripts/pack.mjs unpack"
+  },
+  "devDependencies": {
+    "@effect/vitest": "4.0.0-rc.112",
+    "@types/node": "24.10.1",
+    "effect": "4.0.0-rc.112",
+    "typescript": "7.0.2",
+    "vitest": "4.1.10"
+  },
+  "peerDependencies": {
+    "effect": "^4.0.0-rc.111"
+  }
+}

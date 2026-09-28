@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/turbotobias/sport-lang/main/schema/observation.schema.json",
+  "title": "sport-lang observation",
+  "description": "One thing a bridge saw: an entrant, at a place addressed by `along_m`, doing one of eight kinds of thing, at one UTC instant (SPEC.md §2.3). A log is a JSON array of these, and its ids are unique — a law of the log that needs an engine, as does whether `supersedes` names an observation that exists. Every nullable member is present, written `null`. Members not named here are allowed and ignored. Generated from ts/src/observe.ts by ts/scripts/make-schema.ts; do not edit by hand.",
+  "type": "object",
+  "properties": {
+    "id": {
+      "$ref": "#/$defs/ObservationId"
+    },
+    "entrant": {
+      "$ref": "#/$defs/EntrantId"
+    },
+    "at": {
+      "type": "object",
+      "properties": {
+        "point": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PointId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "along_m": {
+          "type": "number"
+        }
+      },
+      "required": ["point", "along_m"],
+      "additionalProperties": true
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["started", "passed", "entered", "left", "punched", "checked", "finished", "withdrew"]
+    },
+    "t": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\\.[0-9]{3})?Z$",
+      "description": "An instant in UTC: `2026-08-14T16:48:00.000Z`. Milliseconds optional, offset always `Z`, and a day that exists — which the pattern alone cannot check (SPEC.md §2.3)."
+    },
+    "quantity_name": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "quantity_value": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "source": {
+      "type": "string",
+      "enum": ["transponder", "gps", "watch_upload", "manual", "partner", "virtual"]
+    },
+    "device": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/DeviceId"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "confidence": {
+      "type": "number"
+    },
+    "supersedes": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ObservationId"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "id",
+    "entrant",
+    "at",
+    "kind",
+    "t",
+    "quantity_name",
+    "quantity_value",
+    "flags",
+    "source",
+    "device",
+    "confidence",
+    "supersedes"
+  ],
+  "additionalProperties": true,
+  "$defs": {
+    "ObservationId": {
+      "type": "string",
+      "description": "One thing a bridge saw"
+    },
+    "EntrantId": {
+      "type": "string",
+      "description": "One competitor the fold judges"
+    },
+    "PointId": {
+      "type": "string",
+      "description": "A named place on a course document — `lap-3-finish`"
+    },
+    "DeviceId": {
+      "type": "string",
+      "description": "Whatever produced an observation"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  // `src/` → `dist/`: JavaScript plus declarations. Relative imports are written
+  // with `.ts` and emitted as `.js` (`rewriteRelativeImportExtensions`).
+  "extends": "./tsconfig.json",
+  "include": ["src"],
+  "compilerOptions": {
+    "composite": false,
+    "incremental": false,
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": null
+  }
+}

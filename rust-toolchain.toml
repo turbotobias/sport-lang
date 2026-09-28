@@ -1,0 +1,6 @@
+# Exact rather than "stable", so that the implementation the TypeScript is
+# compared against is built by the same compiler on every machine.
+[toolchain]
+channel = "1.98.1"
+components = ["clippy", "rustfmt"]
+targets = ["wasm32-unknown-unknown"]

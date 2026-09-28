@@ -1,0 +1,481 @@
+{
+  "name": "athletics-qualifies-within-on-a-lapped-course",
+  "why": "`qualifies_within` on four laps of 2 500 m, bound to the finish at 10 000 m. Every lap line produces `finished`, so a finish is not any `finished` but one at the place the rule is bound to. One runner runs all four laps in 45:00 and qualifies. One stops after two laps at 20:00 with no `withdrew` — two `finished`, inside fifty minutes, and never at the finish — and does not. One withdraws after three laps, and one runs all four in 55:00: neither qualifies.",
+  "document": {
+    "type": "FeatureCollection",
+    "sport:version": 1,
+    "sport:id": "crs_lapped",
+    "sport:event": "evt_conformance",
+    "sport:way": null,
+    "sport:name": "Conformance 10K, four laps",
+    "sport:dialects": ["athletics@1"],
+    "sport:measure": {
+      "distance_m": null,
+      "distance_method": null,
+      "stated_m": null,
+      "certified_m": null,
+      "ascent_m": null,
+      "descent_m": null,
+      "elevation_source": null,
+      "elevation_smoothing": null,
+      "ascent_threshold_m": null
+    },
+    "sport:provenance": [],
+    "sport:path": [
+      {
+        "line": "ln_loop",
+        "from_m": 0,
+        "to_m": 2500,
+        "repeat": 4
+      }
+    ],
+    "sport:rules": [
+      {
+        "id": "rul_sub50",
+        "dialect": "athletics@1",
+        "kind": "qualifies_within",
+        "ordinal": 0,
+        "at": {
+          "point": "finish",
+          "along_m": 10000
+        },
+        "params": {
+          "within_ms": 3000000,
+          "award": "sub-50"
+        }
+      }
+    ],
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "line",
+          "id": "ln_loop",
+          "polyline": null
+        },
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [0.5, 0.5],
+            [0.505615, 0.5],
+            [0.505615, 0.505615],
+            [0.5, 0.505615],
+            [0.5, 0.5]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "start",
+          "kind": "start",
+          "name": "Start",
+          "along_m": 0
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "lap-1",
+          "kind": "lap",
+          "name": "Lap 1",
+          "along_m": 2500
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "lap-2",
+          "kind": "lap",
+          "name": "Lap 2",
+          "along_m": 5000
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "lap-3",
+          "kind": "lap",
+          "name": "Lap 3",
+          "along_m": 7500
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "finish",
+          "kind": "finish",
+          "name": "Finish",
+          "along_m": 10000
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      }
+    ]
+  },
+  "log": [
+    {
+      "id": "obs_01",
+      "entrant": "ent_four_laps",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-05-02T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_02",
+      "entrant": "ent_two_laps",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-05-02T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_03",
+      "entrant": "ent_slow",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-05-02T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_04",
+      "entrant": "ent_withdrew",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-05-02T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_05",
+      "entrant": "ent_four_laps",
+      "at": {
+        "point": "lap-1",
+        "along_m": 2500
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:11:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_06",
+      "entrant": "ent_two_laps",
+      "at": {
+        "point": "lap-1",
+        "along_m": 2500
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:10:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_07",
+      "entrant": "ent_slow",
+      "at": {
+        "point": "lap-1",
+        "along_m": 2500
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:13:30.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_08",
+      "entrant": "ent_withdrew",
+      "at": {
+        "point": "lap-1",
+        "along_m": 2500
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:12:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_09",
+      "entrant": "ent_four_laps",
+      "at": {
+        "point": "lap-2",
+        "along_m": 5000
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:22:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_10",
+      "entrant": "ent_two_laps",
+      "at": {
+        "point": "lap-2",
+        "along_m": 5000
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:20:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_11",
+      "entrant": "ent_withdrew",
+      "at": {
+        "point": "lap-2",
+        "along_m": 5000
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:24:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_12",
+      "entrant": "ent_slow",
+      "at": {
+        "point": "lap-2",
+        "along_m": 5000
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:27:30.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_13",
+      "entrant": "ent_four_laps",
+      "at": {
+        "point": "lap-3",
+        "along_m": 7500
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:33:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_14",
+      "entrant": "ent_withdrew",
+      "at": {
+        "point": "lap-3",
+        "along_m": 7500
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:36:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_15",
+      "entrant": "ent_withdrew",
+      "at": {
+        "point": null,
+        "along_m": 8000
+      },
+      "kind": "withdrew",
+      "t": "2027-05-02T07:39:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_16",
+      "entrant": "ent_slow",
+      "at": {
+        "point": "lap-3",
+        "along_m": 7500
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:41:30.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_17",
+      "entrant": "ent_four_laps",
+      "at": {
+        "point": "finish",
+        "along_m": 10000
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:45:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_18",
+      "entrant": "ent_slow",
+      "at": {
+        "point": "finish",
+        "along_m": 10000
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:55:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    }
+  ],
+  "expect": [
+    {
+      "entrant": "ent_four_laps",
+      "standing": "clean",
+      "total_ms": 2700000,
+      "adjustment_ms": 0,
+      "awards": ["sub-50"],
+      "laps": 4
+    },
+    {
+      "entrant": "ent_two_laps",
+      "standing": "clean",
+      "total_ms": 1200000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 2
+    },
+    {
+      "entrant": "ent_slow",
+      "standing": "clean",
+      "total_ms": 3300000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 4
+    },
+    {
+      "entrant": "ent_withdrew",
+      "standing": "clean",
+      "total_ms": 2160000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 3
+    }
+  ]
+}

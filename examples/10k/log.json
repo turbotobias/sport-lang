@@ -1,0 +1,257 @@
+[
+  {
+    "id": "obs_01",
+    "entrant": "ent_ana",
+    "at": {
+      "point": "start",
+      "along_m": 0
+    },
+    "kind": "started",
+    "t": "2027-05-02T07:00:00.000Z",
+    "quantity_name": null,
+    "quantity_value": null,
+    "flags": [],
+    "source": "transponder",
+    "device": "dev_start",
+    "confidence": 1,
+    "supersedes": null
+  },
+  {
+    "id": "obs_02",
+    "entrant": "ent_ben",
+    "at": {
+      "point": "start",
+      "along_m": 0
+    },
+    "kind": "started",
+    "t": "2027-05-02T07:00:00.000Z",
+    "quantity_name": null,
+    "quantity_value": null,
+    "flags": [],
+    "source": "transponder",
+    "device": "dev_start",
+    "confidence": 1,
+    "supersedes": null
+  },
+  {
+    "id": "obs_03",
+    "entrant": "ent_cy",
+    "at": {
+      "point": "start",
+      "along_m": 0
+    },
+    "kind": "started",
+    "t": "2027-05-02T07:00:00.000Z",
+    "quantity_name": null,
+    "quantity_value": null,
+    "flags": [],
+    "source": "transponder",
+    "device": "dev_start",
+    "confidence": 1,
+    "supersedes": null
+  },
+  {
+    "id": "obs_04",
+    "entrant": "ent_dee",
+    "at": {
+      "point": "start",
+      "along_m": 0
+    },
+    "kind": "started",
+    "t": "2027-05-02T07:00:00.000Z",
+    "quantity_name": null,
+    "quantity_value": null,
+    "flags": [],
+    "source": "transponder",
+    "device": "dev_start",
+    "confidence": 1,
+    "supersedes": null
+  },
+  {
+    "id": "obs_05",
+    "entrant": "ent_eve",
+    "at": {
+      "point": "start",
+      "along_m": 0
+    },
+    "kind": "started",
+    "t": "2027-05-02T07:00:00.000Z",
+    "quantity_name": null,
+    "quantity_value": null,
+    "flags": [],
+    "source": "transponder",
+    "device": "dev_start",
+    "confidence": 1,
+    "supersedes": null
+  },
+  {
+    "id": "obs_06",
+    "entrant": "ent_ana",
+    "at": {
+      "point": "km-5",
+      "along_m": 5000
+    },
+    "kind": "punched",
+    "t": "2027-05-02T07:22:00.000Z",
+    "quantity_name": null,
+    "quantity_value": null,
+    "flags": [],
+    "source": "transponder",
+    "device": "dev_km5",
+    "confidence": 1,
+    "supersedes": null
+  },
+  {
+    "id": "obs_07",
+    "entrant": "ent_dee",
+    "at": {
+      "point": "km-5",
+      "along_m": 5000
+    },
+    "kind": "punched",
+    "t": "2027-05-02T07:24:00.000Z",
+    "quantity_name": null,
+    "quantity_value": null,
+    "flags": [],
+    "source": "transponder",
+    "device": "dev_km5",
+    "confidence": 1,
+    "supersedes": null
+  },
+  {
+    "id": "obs_08",
+    "entrant": "ent_eve",
+    "at": {
+      "point": "km-5",
+      "along_m": 5000
+    },
+    "kind": "punched",
+    "t": "2027-05-02T07:26:00.000Z",
+    "quantity_name": null,
+    "quantity_value": null,
+    "flags": ["outside_help"],
+    "source": "manual",
+    "device": "dev_marshal",
+    "confidence": 1,
+    "supersedes": null
+  },
+  {
+    "id": "obs_09",
+    "entrant": "ent_ben",
+    "at": {
+      "point": "km-5",
+      "along_m": 5000
+    },
+    "kind": "punched",
+    "t": "2027-05-02T07:41:00.000Z",
+    "quantity_name": null,
+    "quantity_value": null,
+    "flags": [],
+    "source": "transponder",
+    "device": "dev_km5",
+    "confidence": 1,
+    "supersedes": null
+  },
+  {
+    "id": "obs_10",
+    "entrant": "ent_ana",
+    "at": {
+      "point": "finish",
+      "along_m": 10000
+    },
+    "kind": "finished",
+    "t": "2027-05-02T07:46:30.000Z",
+    "quantity_name": null,
+    "quantity_value": null,
+    "flags": [],
+    "source": "transponder",
+    "device": "dev_finish",
+    "confidence": 1,
+    "supersedes": null
+  },
+  {
+    "id": "obs_11",
+    "entrant": "ent_dee",
+    "at": {
+      "point": "finish",
+      "along_m": 10000
+    },
+    "kind": "finished",
+    "t": "2027-05-02T07:58:00.000Z",
+    "quantity_name": null,
+    "quantity_value": null,
+    "flags": [],
+    "source": "manual",
+    "device": "dev_marshal",
+    "confidence": 1,
+    "supersedes": null
+  },
+  {
+    "id": "obs_12",
+    "entrant": "ent_cy",
+    "at": {
+      "point": "finish",
+      "along_m": 10000
+    },
+    "kind": "finished",
+    "t": "2027-05-02T07:52:00.000Z",
+    "quantity_name": null,
+    "quantity_value": null,
+    "flags": [],
+    "source": "transponder",
+    "device": "dev_finish",
+    "confidence": 1,
+    "supersedes": null
+  },
+  {
+    "id": "obs_13",
+    "entrant": "ent_eve",
+    "at": {
+      "point": "finish",
+      "along_m": 10000
+    },
+    "kind": "finished",
+    "t": "2027-05-02T07:55:00.000Z",
+    "quantity_name": null,
+    "quantity_value": null,
+    "flags": [],
+    "source": "transponder",
+    "device": "dev_finish",
+    "confidence": 1,
+    "supersedes": null
+  },
+  {
+    "id": "obs_14",
+    "entrant": "ent_ben",
+    "at": {
+      "point": "finish",
+      "along_m": 10000
+    },
+    "kind": "finished",
+    "t": "2027-05-02T08:25:00.000Z",
+    "quantity_name": null,
+    "quantity_value": null,
+    "flags": [],
+    "source": "transponder",
+    "device": "dev_finish",
+    "confidence": 1,
+    "supersedes": null
+  },
+  {
+    "id": "obs_15",
+    "entrant": "ent_dee",
+    "at": {
+      "point": "finish",
+      "along_m": 10000
+    },
+    "kind": "finished",
+    "t": "2027-05-02T07:48:00.000Z",
+    "quantity_name": null,
+    "quantity_value": null,
+    "flags": [],
+    "source": "manual",
+    "device": "dev_marshal",
+    "confidence": 1,
+    "supersedes": "obs_11"
+  }
+]

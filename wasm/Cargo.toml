@@ -1,0 +1,28 @@
+[package]
+name = "sport-lang-wasm"
+version = "0.1.0"
+edition.workspace = true
+# Written out rather than `.workspace = true`: wasm-pack reads these two fields
+# from this manifest itself, and its parser (0.10.3 locally) does not resolve workspace
+# inheritance. Keep them equal to the workspace's.
+license = "Apache-2.0"
+repository = "https://github.com/turbotobias/sport-lang"
+description = "The sport-lang core compiled to WebAssembly, so JavaScript (Node or a browser) runs the same fold a native program links."
+readme = "../README.md"
+keywords = ["timing", "race", "wasm", "sport", "rules"]
+categories = ["wasm", "parser-implementations"]
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+sport-lang = { path = "../rust", version = "0.1.0" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+wasm-bindgen = "0.2"
+
+[package.metadata.wasm-pack.profile.release]
+# The `wasm-opt` wasm-pack ships is older than the reference-types this
+# toolchain emits and refuses the module outright. The binary is about 410 KB
+# unoptimised, so skipping it costs little until a newer wasm-opt is bundled.
+wasm-opt = false

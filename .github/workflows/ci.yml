@@ -1,0 +1,116 @@
+# sport-lang's own CI: the Rust core, its WebAssembly build, and the TypeScript
+# package tested against that build — so the two implementations of SPEC.md are
+# compared on every change, not only when someone remembers to.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  rust:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      # No toolchain action: `rust-toolchain.toml` pins the compiler, and
+      # rustup installs exactly that on first use. An action naming a channel
+      # here would silently override the pin.
+      - name: Toolchain (from rust-toolchain.toml)
+        run: |
+          rustc --version
+          cargo --version
+          rustup show active-toolchain
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Format
+        run: cargo fmt --all --check
+
+      - name: Clippy
+        run: cargo clippy --workspace --all-targets --locked -- -D warnings
+
+      - name: Test
+        run: cargo test --workspace --locked
+
+  wasm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Toolchain (from rust-toolchain.toml, with wasm32-unknown-unknown)
+        run: rustc --version
+
+      - uses: Swatinem/rust-cache@v2
+
+      - name: Install wasm-pack
+        run: |
+          curl -sSfL "https://github.com/rustwasm/wasm-pack/releases/download/v0.13.1/wasm-pack-v0.13.1-x86_64-unknown-linux-musl.tar.gz" -o "$RUNNER_TEMP/wasm-pack.tar.gz"
+          tar -xzf "$RUNNER_TEMP/wasm-pack.tar.gz" -C "$RUNNER_TEMP"
+          sudo install "$RUNNER_TEMP/wasm-pack-v0.13.1-x86_64-unknown-linux-musl/wasm-pack" /usr/local/bin/
+
+      - name: Build the core for Node
+        run: wasm-pack build wasm --target nodejs --out-dir pkg-node --release
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: core-node
+          path: wasm/pkg-node/
+          retention-days: 1
+
+  ts:
+    needs: wasm
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24]
+    defaults:
+      run:
+        working-directory: ts
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: core-node
+          path: wasm/pkg-node/
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      # `npm ci`: exactly package-lock.json, and a failure if it no longer
+      # matches package.json — the toolchain a stranger's CI gets is this one.
+      - name: Install
+        run: npm ci --no-audit --no-fund
+
+      - name: Typecheck
+        run: npm run check
+
+      # `SPORT_LANG_REQUIRE_CORE=1` turns "no core, so skip the comparison"
+      # into a failure: a differential test that compared nothing must not pass.
+      - name: Test, against the Rust core
+        env:
+          SPORT_LANG_REQUIRE_CORE: '1'
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      # Packs the package, installs the tarball into a scratch project and
+      # imports it by name, through the exports map — as a consumer would.
+      - name: Smoke-install the packed package
+        run: node ../.github/smoke.mjs ..

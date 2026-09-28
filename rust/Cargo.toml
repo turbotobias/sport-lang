@@ -1,0 +1,17 @@
+[package]
+name = "sport-lang"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "A declarative language for the rules of an endurance event, and a deterministic fold from timing observations to results."
+readme = "../README.md"
+keywords = ["timing", "race", "geojson", "sport", "rules"]
+categories = ["parser-implementations", "science::geo"]
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+[dev-dependencies]
+glob = "0.3"
