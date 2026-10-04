@@ -1,0 +1,140 @@
+{
+  "name": "refuses-a-cutoff-at-an-offset",
+  "why": "§2.3 — every instant a dialect’s `params` carries is in the one UTC shape. `07:40:00+02:00` is not converted and not read as UTC, so `cutoff_at`’s parameters do not fit.",
+  "expect": {
+    "verdict": "refuses",
+    "laws": [],
+    "missing_dialects": [],
+    "refused": [
+      {
+        "id": "rul_gate",
+        "why": "parameters do not fit"
+      }
+    ]
+  },
+  "document": {
+    "type": "FeatureCollection",
+    "pace-geojson": 1,
+    "pace:id": "crs_refuses-a-cutoff-at-an-offset",
+    "pace:event": "evt_decode-base",
+    "pace:way": null,
+    "pace:name": "refuses-a-cutoff-at-an-offset",
+    "pace:dialects": ["athletics@1"],
+    "pace:measure": {
+      "distance_m": 1000,
+      "distance_method": "wgs84-geodesic-2d",
+      "stated_m": 1000,
+      "certified_m": null,
+      "ascent_m": 0,
+      "descent_m": null,
+      "elevation_source": "file",
+      "elevation_smoothing": null,
+      "ascent_threshold_m": null
+    },
+    "pace:provenance": [
+      {
+        "source": "hand",
+        "origin_url": null,
+        "sha256": null,
+        "format": null,
+        "verified_by": null,
+        "verified_at": null
+      }
+    ],
+    "pace:path": [
+      {
+        "line": "ln_base",
+        "from_m": 0,
+        "to_m": 1000,
+        "repeat": 1
+      }
+    ],
+    "pace:rules": [
+      {
+        "id": "rul_cutoff",
+        "dialect": "athletics@1",
+        "kind": "cutoff_within",
+        "ordinal": 0,
+        "at": null,
+        "params": {
+          "within_ms": 600000
+        }
+      },
+      {
+        "id": "rul_gate",
+        "dialect": "athletics@1",
+        "kind": "cutoff_at",
+        "ordinal": 1,
+        "at": {
+          "point": "mat-500",
+          "along_m": 500
+        },
+        "params": {
+          "at": "2027-05-02T07:40:00+02:00",
+          "says": "07:40"
+        }
+      }
+    ],
+    "features": [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [0.5, 0.5, 0],
+            [0.503, 0.5, 0],
+            [0.506, 0.5, 0],
+            [0.509, 0.5, 0]
+          ]
+        },
+        "properties": {
+          "role": "line",
+          "id": "ln_base",
+          "polyline": null
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5, 0]
+        },
+        "properties": {
+          "role": "point",
+          "id": "start",
+          "kind": "start",
+          "name": "Start",
+          "along_m": 0
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5045, 0.5, 0]
+        },
+        "properties": {
+          "role": "point",
+          "id": "mat-500",
+          "kind": "mat",
+          "name": "500 m",
+          "along_m": 500
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.509, 0.5, 0]
+        },
+        "properties": {
+          "role": "point",
+          "id": "finish",
+          "kind": "finish",
+          "name": "Finish",
+          "along_m": 1000
+        }
+      }
+    ]
+  }
+}

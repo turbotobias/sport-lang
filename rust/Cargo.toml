@@ -1,0 +1,17 @@
+[package]
+name = "pace-geojson"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "The rules of an endurance event, as one file any software can run: a GeoJSON course carrying the rules, and a pure fold from timing observations to every entrant's result."
+readme = "../README.md"
+keywords = ["timing", "race", "geojson", "sport", "rules"]
+categories = ["parser-implementations", "science::geo"]
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+[dev-dependencies]
+glob = "0.3"

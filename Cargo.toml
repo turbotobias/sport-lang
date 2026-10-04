@@ -1,0 +1,26 @@
+# pace-geojson: the language, as one workspace.
+#
+# `rust` is the library — the second implementation of SPEC.md, written from the
+# specification and the corpus rather than from the TypeScript. `wasm` is a thin
+# binding over it, so a browser can fold with the same engine a native program
+# links. The library carries no `wasm-bindgen`; the binding is the only part
+# that knows about JavaScript.
+[workspace]
+resolver = "2"
+members = ["rust", "wasm"]
+
+[workspace.package]
+edition = "2021"
+license = "Apache-2.0"
+repository = "https://github.com/turbotobias/pace-geojson"
+
+[workspace.dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# The WebAssembly build is shipped to browsers, so release trades speed for
+# size. Profiles only take effect at the workspace root, which is why this lives
+# here rather than in `wasm/Cargo.toml`.
+[profile.release]
+opt-level = "s"
+lto = true

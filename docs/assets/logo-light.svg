@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 532 128" width="532" height="128" role="img" aria-label="pace-geojson">
+  <title>pace-geojson</title>
+  <rect x="8" y="8" width="112" height="112" rx="28" fill="#e8590c"/>
+  <g fill="none" stroke="#ffffff" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M30 40 C 54 40, 56 64, 76 64"/>
+    <path d="M30 88 C 54 88, 56 64, 76 64"/>
+    <path d="M76 64 L 88 64"/>
+  </g>
+  <circle cx="30" cy="40" r="7" fill="#ffffff"/>
+  <circle cx="30" cy="88" r="7" fill="#ffffff"/>
+  <rect x="92" y="30" width="14" height="70" fill="none" stroke="#ffffff" stroke-width="2"/>
+  <rect x="92" y="30" width="7" height="7" fill="#ffffff"/><rect x="99" y="37" width="7" height="7" fill="#ffffff"/><rect x="92" y="44" width="7" height="7" fill="#ffffff"/><rect x="99" y="51" width="7" height="7" fill="#ffffff"/><rect x="92" y="58" width="7" height="7" fill="#ffffff"/><rect x="99" y="65" width="7" height="7" fill="#ffffff"/><rect x="92" y="72" width="7" height="7" fill="#ffffff"/><rect x="99" y="79" width="7" height="7" fill="#ffffff"/><rect x="92" y="86" width="7" height="7" fill="#ffffff"/><rect x="99" y="93" width="7" height="7" fill="#ffffff"/>
+  <!-- textLength holds the wordmark to one width, so a wider system font is fitted, not clipped -->
+  <text x="146" y="82" textLength="380" lengthAdjust="spacingAndGlyphs" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif" font-size="62" font-weight="800" letter-spacing="-1.5" fill="#1f2328">pace-geojson</text>
+</svg>

@@ -1,0 +1,524 @@
+{
+  "name": "triathlon-wetsuit-reads-the-latest-measurement",
+  "why": "`wetsuit_limit` at 24.5 °C: a wetsuit disqualifies when the latest water temperature in the entrant’s settled log is above the limit. Above it with a wetsuit is disqualified; above it without one, below it, and exactly on it (the comparison is strictly greater) are clean. Of two measurements the later decides, in both directions. And with no measurement taken the rule is false — a measurement nobody took is false, not a default — so a wetsuit nobody measured the water for is clean.",
+  "document": {
+    "type": "FeatureCollection",
+    "pace-geojson": 1,
+    "pace:id": "crs_wetsuit",
+    "pace:event": "evt_conformance",
+    "pace:way": null,
+    "pace:name": "Conformance swim",
+    "pace:dialects": ["triathlon@1"],
+    "pace:measure": {
+      "distance_m": null,
+      "distance_method": null,
+      "stated_m": null,
+      "certified_m": null,
+      "ascent_m": null,
+      "descent_m": null,
+      "elevation_source": null,
+      "elevation_smoothing": null,
+      "ascent_threshold_m": null
+    },
+    "pace:provenance": [],
+    "pace:path": [
+      {
+        "line": "ln_1",
+        "from_m": 0,
+        "to_m": 1500,
+        "repeat": 1
+      }
+    ],
+    "pace:rules": [
+      {
+        "id": "rul_wetsuit",
+        "dialect": "triathlon@1",
+        "kind": "wetsuit_limit",
+        "ordinal": 0,
+        "at": null,
+        "params": {
+          "max_c": 24.5
+        }
+      }
+    ],
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "line",
+          "id": "ln_1",
+          "polyline": null
+        },
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [0.5, 0.5],
+            [0.5, 0.51]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "start",
+          "kind": "start",
+          "name": "Start",
+          "along_m": 0
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "finish",
+          "kind": "finish",
+          "name": "Finish",
+          "along_m": 1500
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      }
+    ]
+  },
+  "log": [
+    {
+      "id": "obs_01",
+      "entrant": "ent_warm_suit",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "checked",
+      "t": "2027-07-04T06:50:00.000Z",
+      "quantity_name": "water_c",
+      "quantity_value": 25.5,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_02",
+      "entrant": "ent_warm_skin",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "checked",
+      "t": "2027-07-04T06:50:00.000Z",
+      "quantity_name": "water_c",
+      "quantity_value": 25.5,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_03",
+      "entrant": "ent_cold_suit",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "checked",
+      "t": "2027-07-04T06:50:00.000Z",
+      "quantity_name": "water_c",
+      "quantity_value": 23,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_04",
+      "entrant": "ent_limit_suit",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "checked",
+      "t": "2027-07-04T06:50:00.000Z",
+      "quantity_name": "water_c",
+      "quantity_value": 24.5,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_05",
+      "entrant": "ent_cooled_suit",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "checked",
+      "t": "2027-07-04T06:40:00.000Z",
+      "quantity_name": "water_c",
+      "quantity_value": 25.5,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_06",
+      "entrant": "ent_cooled_suit",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "checked",
+      "t": "2027-07-04T06:55:00.000Z",
+      "quantity_name": "water_c",
+      "quantity_value": 24,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_07",
+      "entrant": "ent_warmed_suit",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "checked",
+      "t": "2027-07-04T06:40:00.000Z",
+      "quantity_name": "water_c",
+      "quantity_value": 23,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_08",
+      "entrant": "ent_warmed_suit",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "checked",
+      "t": "2027-07-04T06:55:00.000Z",
+      "quantity_name": "water_c",
+      "quantity_value": 25.5,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_09",
+      "entrant": "ent_warm_suit",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-07-04T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": ["wetsuit"],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_10",
+      "entrant": "ent_warm_skin",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-07-04T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_11",
+      "entrant": "ent_cold_suit",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-07-04T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": ["wetsuit"],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_12",
+      "entrant": "ent_limit_suit",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-07-04T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": ["wetsuit"],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_13",
+      "entrant": "ent_cooled_suit",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-07-04T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": ["wetsuit"],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_14",
+      "entrant": "ent_warmed_suit",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-07-04T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": ["wetsuit"],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_15",
+      "entrant": "ent_unmeasured_suit",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-07-04T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": ["wetsuit"],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_16",
+      "entrant": "ent_warm_suit",
+      "at": {
+        "point": "finish",
+        "along_m": 1500
+      },
+      "kind": "finished",
+      "t": "2027-07-04T08:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_17",
+      "entrant": "ent_warm_skin",
+      "at": {
+        "point": "finish",
+        "along_m": 1500
+      },
+      "kind": "finished",
+      "t": "2027-07-04T08:05:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_18",
+      "entrant": "ent_cold_suit",
+      "at": {
+        "point": "finish",
+        "along_m": 1500
+      },
+      "kind": "finished",
+      "t": "2027-07-04T08:10:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_19",
+      "entrant": "ent_limit_suit",
+      "at": {
+        "point": "finish",
+        "along_m": 1500
+      },
+      "kind": "finished",
+      "t": "2027-07-04T08:15:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_20",
+      "entrant": "ent_cooled_suit",
+      "at": {
+        "point": "finish",
+        "along_m": 1500
+      },
+      "kind": "finished",
+      "t": "2027-07-04T08:20:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_21",
+      "entrant": "ent_warmed_suit",
+      "at": {
+        "point": "finish",
+        "along_m": 1500
+      },
+      "kind": "finished",
+      "t": "2027-07-04T08:25:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_22",
+      "entrant": "ent_unmeasured_suit",
+      "at": {
+        "point": "finish",
+        "along_m": 1500
+      },
+      "kind": "finished",
+      "t": "2027-07-04T08:30:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    }
+  ],
+  "expect": [
+    {
+      "entrant": "ent_warm_suit",
+      "standing": "disqualified",
+      "total_ms": 3600000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 1
+    },
+    {
+      "entrant": "ent_warm_skin",
+      "standing": "clean",
+      "total_ms": 3900000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 1
+    },
+    {
+      "entrant": "ent_cold_suit",
+      "standing": "clean",
+      "total_ms": 4200000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 1
+    },
+    {
+      "entrant": "ent_limit_suit",
+      "standing": "clean",
+      "total_ms": 4500000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 1
+    },
+    {
+      "entrant": "ent_cooled_suit",
+      "standing": "clean",
+      "total_ms": 4800000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 1
+    },
+    {
+      "entrant": "ent_warmed_suit",
+      "standing": "disqualified",
+      "total_ms": 5100000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 1
+    },
+    {
+      "entrant": "ent_unmeasured_suit",
+      "standing": "clean",
+      "total_ms": 5400000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 1
+    }
+  ]
+}

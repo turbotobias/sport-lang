@@ -1,0 +1,1629 @@
+{
+  "name": "backyard-five-laps-corralled-hourly",
+  "why": "A 6.72 km loop, five times, corralled on the hour. A lap is a place rather than a repetition, so the kernel says this without learning to count. Three run all five inside the hour, four are gated for losing it, one stops before the first lap closes — and nobody is the last one standing: three are still going when the laps run out, so the field aggregate holds for nobody and the award goes unclaimed.",
+  "generated": {
+    "from": "corpus/courses/loop-6720.json",
+    "seed": 13,
+    "entrants": 8
+  },
+  "document": {
+    "type": "FeatureCollection",
+    "pace-geojson": 1,
+    "pace:id": "crs_backyard-five-laps-corralled-hourly",
+    "pace:event": "evt_backyard-five-laps-corralled-hourly",
+    "pace:way": null,
+    "pace:name": "6.72 km loop",
+    "pace:dialects": ["backyard@1"],
+    "pace:measure": {
+      "distance_m": 6722,
+      "distance_method": "mean-sphere-2d",
+      "stated_m": null,
+      "certified_m": null,
+      "ascent_m": 79,
+      "descent_m": null,
+      "elevation_source": "file",
+      "elevation_smoothing": null,
+      "ascent_threshold_m": null
+    },
+    "pace:provenance": [
+      {
+        "source": "synthetic",
+        "origin_url": null,
+        "sha256": null,
+        "format": null,
+        "verified_by": null,
+        "verified_at": null
+      }
+    ],
+    "pace:path": [
+      {
+        "line": "ln_loop-6720",
+        "from_m": 0,
+        "to_m": 6720,
+        "repeat": 5
+      }
+    ],
+    "pace:rules": [
+      {
+        "id": "rul_lap_1",
+        "dialect": "backyard@1",
+        "kind": "lap_within",
+        "ordinal": 0,
+        "at": null,
+        "params": {
+          "within_ms": 3600000,
+          "from_m": 0,
+          "to_m": 6720,
+          "lap": 1
+        }
+      },
+      {
+        "id": "rul_lap_2",
+        "dialect": "backyard@1",
+        "kind": "lap_within",
+        "ordinal": 1,
+        "at": null,
+        "params": {
+          "within_ms": 3600000,
+          "from_m": 6720,
+          "to_m": 13440,
+          "lap": 2
+        }
+      },
+      {
+        "id": "rul_lap_3",
+        "dialect": "backyard@1",
+        "kind": "lap_within",
+        "ordinal": 2,
+        "at": null,
+        "params": {
+          "within_ms": 3600000,
+          "from_m": 13440,
+          "to_m": 20160,
+          "lap": 3
+        }
+      },
+      {
+        "id": "rul_lap_4",
+        "dialect": "backyard@1",
+        "kind": "lap_within",
+        "ordinal": 3,
+        "at": null,
+        "params": {
+          "within_ms": 3600000,
+          "from_m": 20160,
+          "to_m": 26880,
+          "lap": 4
+        }
+      },
+      {
+        "id": "rul_lap_5",
+        "dialect": "backyard@1",
+        "kind": "lap_within",
+        "ordinal": 4,
+        "at": null,
+        "params": {
+          "within_ms": 3600000,
+          "from_m": 26880,
+          "to_m": 33600,
+          "lap": 5
+        }
+      },
+      {
+        "id": "rul_last",
+        "dialect": "backyard@1",
+        "kind": "last_standing",
+        "ordinal": 99,
+        "at": null,
+        "params": {
+          "award": "last one standing"
+        }
+      }
+    ],
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "line",
+          "id": "ln_loop-6720",
+          "polyline": null
+        },
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [0.47, 0.39, 63],
+            [0.467397, 0.389979, 53],
+            [0.464064, 0.389847, 51],
+            [0.462936, 0.389671, 54],
+            [0.462318, 0.389515, 56],
+            [0.46142, 0.389211, 60],
+            [0.459664, 0.388683, 64],
+            [0.459046, 0.388484, 64],
+            [0.458725, 0.388339, 64],
+            [0.458482, 0.388196, 63],
+            [0.458274, 0.388043, 63],
+            [0.458078, 0.387862, 63],
+            [0.457879, 0.387637, 62],
+            [0.45767, 0.387342, 62],
+            [0.457468, 0.386985, 61],
+            [0.457304, 0.386607, 60],
+            [0.457179, 0.386208, 59],
+            [0.457085, 0.385736, 58],
+            [0.45702, 0.384993, 58],
+            [0.457008, 0.383729, 58],
+            [0.457011, 0.382667, 60],
+            [0.457089, 0.380981, 64],
+            [0.457261, 0.379964, 66],
+            [0.457532, 0.378935, 66],
+            [0.457654, 0.378619, 66],
+            [0.457756, 0.378422, 66],
+            [0.457856, 0.37827, 65],
+            [0.457961, 0.378144, 65],
+            [0.458077, 0.37803, 64],
+            [0.458212, 0.377924, 64],
+            [0.458376, 0.37782, 63],
+            [0.458588, 0.377717, 62],
+            [0.458884, 0.377609, 61],
+            [0.459387, 0.377484, 58],
+            [0.45997, 0.377387, 55],
+            [0.461524, 0.377192, 44],
+            [0.46435, 0.376974, 28],
+            [0.466819, 0.37691, 24],
+            [0.47076, 0.376843, 19],
+            [0.471457, 0.376809, 17],
+            [0.474512, 0.376678, 9],
+            [0.475157, 0.37673, 9],
+            [0.475569, 0.376809, 10],
+            [0.475873, 0.376901, 10],
+            [0.476118, 0.377005, 11],
+            [0.47633, 0.377122, 12],
+            [0.476528, 0.377261, 13],
+            [0.476731, 0.377439, 14],
+            [0.476971, 0.377699, 16],
+            [0.477286, 0.378121, 19],
+            [0.477525, 0.378518, 22],
+            [0.477671, 0.378832, 24],
+            [0.477776, 0.379139, 26],
+            [0.477857, 0.379499, 29],
+            [0.477925, 0.380105, 33],
+            [0.477983, 0.382409, 45],
+            [0.477992, 0.384301, 49],
+            [0.477969, 0.386062, 50],
+            [0.477913, 0.386453, 50],
+            [0.477843, 0.386728, 50],
+            [0.477758, 0.386957, 50],
+            [0.477651, 0.387171, 50],
+            [0.477506, 0.387397, 50],
+            [0.477241, 0.387725, 51],
+            [0.476277, 0.388813, 55],
+            [0.476024, 0.389062, 56],
+            [0.47581, 0.389232, 57],
+            [0.475582, 0.389376, 58],
+            [0.475309, 0.389511, 59],
+            [0.474946, 0.389644, 60],
+            [0.474403, 0.38978, 62],
+            [0.473382, 0.389922, 65],
+            [0.472734, 0.389969, 67],
+            [0.472187, 0.389992, 67],
+            [0.47, 0.39, 63]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "lap-1-start",
+          "kind": "corral",
+          "name": "Lap 1 corral",
+          "along_m": 0
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.47, 0.39, 63]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "lap-1-finish",
+          "kind": "lap",
+          "name": "Lap 1",
+          "along_m": 6720
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.47, 0.39, 63]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "lap-2-start",
+          "kind": "corral",
+          "name": "Lap 2 corral",
+          "along_m": 6720
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.47, 0.39, 63]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "lap-2-finish",
+          "kind": "lap",
+          "name": "Lap 2",
+          "along_m": 13440
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.47, 0.39, 63]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "lap-3-start",
+          "kind": "corral",
+          "name": "Lap 3 corral",
+          "along_m": 13440
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.47, 0.39, 63]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "lap-3-finish",
+          "kind": "lap",
+          "name": "Lap 3",
+          "along_m": 20160
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.47, 0.39, 63]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "lap-4-start",
+          "kind": "corral",
+          "name": "Lap 4 corral",
+          "along_m": 20160
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.47, 0.39, 63]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "lap-4-finish",
+          "kind": "lap",
+          "name": "Lap 4",
+          "along_m": 26880
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.47, 0.39, 63]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "lap-5-start",
+          "kind": "corral",
+          "name": "Lap 5 corral",
+          "along_m": 26880
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.47, 0.39, 63]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "lap-5-finish",
+          "kind": "lap",
+          "name": "Lap 5",
+          "along_m": 33600
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.47, 0.39, 63]
+        }
+      }
+    ]
+  },
+  "log": [
+    {
+      "id": "obs_ent_ghost_0000_gun",
+      "entrant": "ent_ghost_0000",
+      "at": {
+        "point": null,
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-06-21T18:30:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0000_out",
+      "entrant": "ent_ghost_0000",
+      "at": {
+        "point": "lap-1-start",
+        "along_m": 0
+      },
+      "kind": "withdrew",
+      "t": "2027-06-21T18:30:01.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0001_gun",
+      "entrant": "ent_ghost_0001",
+      "at": {
+        "point": null,
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-06-21T18:30:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0001_lap-1-start",
+      "entrant": "ent_ghost_0001",
+      "at": {
+        "point": "lap-1-start",
+        "along_m": 0
+      },
+      "kind": "passed",
+      "t": "2027-06-21T18:30:00.350Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0001_lap-1-finish",
+      "entrant": "ent_ghost_0001",
+      "at": {
+        "point": "lap-1-finish",
+        "along_m": 6720
+      },
+      "kind": "finished",
+      "t": "2027-06-21T19:54:46.566Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0001_lap-2-start",
+      "entrant": "ent_ghost_0001",
+      "at": {
+        "point": "lap-2-start",
+        "along_m": 6720
+      },
+      "kind": "passed",
+      "t": "2027-06-21T20:29:58.748Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0001_out",
+      "entrant": "ent_ghost_0001",
+      "at": {
+        "point": "lap-2-start",
+        "along_m": 6720
+      },
+      "kind": "withdrew",
+      "t": "2027-06-21T20:30:01.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0002_gun",
+      "entrant": "ent_ghost_0002",
+      "at": {
+        "point": null,
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-06-21T18:30:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0002_lap-1-start",
+      "entrant": "ent_ghost_0002",
+      "at": {
+        "point": "lap-1-start",
+        "along_m": 0
+      },
+      "kind": "passed",
+      "t": "2027-06-21T18:30:00.693Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0002_lap-1-finish",
+      "entrant": "ent_ghost_0002",
+      "at": {
+        "point": "lap-1-finish",
+        "along_m": 6720
+      },
+      "kind": "finished",
+      "t": "2027-06-21T19:18:01.964Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0002_lap-2-start",
+      "entrant": "ent_ghost_0002",
+      "at": {
+        "point": "lap-2-start",
+        "along_m": 6720
+      },
+      "kind": "passed",
+      "t": "2027-06-21T19:30:00.935Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0002_lap-2-finish",
+      "entrant": "ent_ghost_0002",
+      "at": {
+        "point": "lap-2-finish",
+        "along_m": 13440
+      },
+      "kind": "finished",
+      "t": "2027-06-21T20:17:58.705Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0002_lap-3-start",
+      "entrant": "ent_ghost_0002",
+      "at": {
+        "point": "lap-3-start",
+        "along_m": 13440
+      },
+      "kind": "passed",
+      "t": "2027-06-21T20:29:59.421Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0002_lap-3-finish",
+      "entrant": "ent_ghost_0002",
+      "at": {
+        "point": "lap-3-finish",
+        "along_m": 20160
+      },
+      "kind": "finished",
+      "t": "2027-06-21T21:17:59.974Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0002_lap-4-start",
+      "entrant": "ent_ghost_0002",
+      "at": {
+        "point": "lap-4-start",
+        "along_m": 20160
+      },
+      "kind": "passed",
+      "t": "2027-06-21T21:29:57.368Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0002_lap-4-finish",
+      "entrant": "ent_ghost_0002",
+      "at": {
+        "point": "lap-4-finish",
+        "along_m": 26880
+      },
+      "kind": "finished",
+      "t": "2027-06-21T22:18:03.573Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0002_lap-5-start",
+      "entrant": "ent_ghost_0002",
+      "at": {
+        "point": "lap-5-start",
+        "along_m": 26880
+      },
+      "kind": "passed",
+      "t": "2027-06-21T22:30:01.349Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0002_lap-5-finish",
+      "entrant": "ent_ghost_0002",
+      "at": {
+        "point": "lap-5-finish",
+        "along_m": 33600
+      },
+      "kind": "finished",
+      "t": "2027-06-21T23:18:00.277Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0003_gun",
+      "entrant": "ent_ghost_0003",
+      "at": {
+        "point": null,
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-06-21T18:30:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0003_lap-1-start",
+      "entrant": "ent_ghost_0003",
+      "at": {
+        "point": "lap-1-start",
+        "along_m": 0
+      },
+      "kind": "passed",
+      "t": "2027-06-21T18:29:57.495Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0003_lap-1-finish",
+      "entrant": "ent_ghost_0003",
+      "at": {
+        "point": "lap-1-finish",
+        "along_m": 6720
+      },
+      "kind": "finished",
+      "t": "2027-06-21T19:35:20.985Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0003_lap-2-start",
+      "entrant": "ent_ghost_0003",
+      "at": {
+        "point": "lap-2-start",
+        "along_m": 6720
+      },
+      "kind": "passed",
+      "t": "2027-06-21T20:29:58.031Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0003_lap-2-finish",
+      "entrant": "ent_ghost_0003",
+      "at": {
+        "point": "lap-2-finish",
+        "along_m": 13440
+      },
+      "kind": "finished",
+      "t": "2027-06-21T21:35:24.041Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0003_lap-3-start",
+      "entrant": "ent_ghost_0003",
+      "at": {
+        "point": "lap-3-start",
+        "along_m": 13440
+      },
+      "kind": "passed",
+      "t": "2027-06-21T22:29:58.017Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0003_lap-3-finish",
+      "entrant": "ent_ghost_0003",
+      "at": {
+        "point": "lap-3-finish",
+        "along_m": 20160
+      },
+      "kind": "finished",
+      "t": "2027-06-21T23:35:19.459Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0003_lap-4-start",
+      "entrant": "ent_ghost_0003",
+      "at": {
+        "point": "lap-4-start",
+        "along_m": 20160
+      },
+      "kind": "passed",
+      "t": "2027-06-22T00:29:58.580Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0003_lap-4-finish",
+      "entrant": "ent_ghost_0003",
+      "at": {
+        "point": "lap-4-finish",
+        "along_m": 26880
+      },
+      "kind": "finished",
+      "t": "2027-06-22T01:35:24.473Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0003_lap-5-start",
+      "entrant": "ent_ghost_0003",
+      "at": {
+        "point": "lap-5-start",
+        "along_m": 26880
+      },
+      "kind": "passed",
+      "t": "2027-06-22T02:29:57.775Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0003_lap-5-finish",
+      "entrant": "ent_ghost_0003",
+      "at": {
+        "point": "lap-5-finish",
+        "along_m": 33600
+      },
+      "kind": "finished",
+      "t": "2027-06-22T03:35:18.779Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0004_gun",
+      "entrant": "ent_ghost_0004",
+      "at": {
+        "point": null,
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-06-21T18:30:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0004_lap-1-start",
+      "entrant": "ent_ghost_0004",
+      "at": {
+        "point": "lap-1-start",
+        "along_m": 0
+      },
+      "kind": "passed",
+      "t": "2027-06-21T18:30:01.176Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0004_lap-1-finish",
+      "entrant": "ent_ghost_0004",
+      "at": {
+        "point": "lap-1-finish",
+        "along_m": 6720
+      },
+      "kind": "finished",
+      "t": "2027-06-21T19:26:58.192Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0004_lap-2-start",
+      "entrant": "ent_ghost_0004",
+      "at": {
+        "point": "lap-2-start",
+        "along_m": 6720
+      },
+      "kind": "passed",
+      "t": "2027-06-21T19:29:59.424Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0004_lap-2-finish",
+      "entrant": "ent_ghost_0004",
+      "at": {
+        "point": "lap-2-finish",
+        "along_m": 13440
+      },
+      "kind": "finished",
+      "t": "2027-06-21T20:26:57.813Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0004_lap-3-start",
+      "entrant": "ent_ghost_0004",
+      "at": {
+        "point": "lap-3-start",
+        "along_m": 13440
+      },
+      "kind": "passed",
+      "t": "2027-06-21T20:30:01.210Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0004_lap-3-finish",
+      "entrant": "ent_ghost_0004",
+      "at": {
+        "point": "lap-3-finish",
+        "along_m": 20160
+      },
+      "kind": "finished",
+      "t": "2027-06-21T21:26:57.927Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0004_lap-4-start",
+      "entrant": "ent_ghost_0004",
+      "at": {
+        "point": "lap-4-start",
+        "along_m": 20160
+      },
+      "kind": "passed",
+      "t": "2027-06-21T21:30:01.654Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0004_lap-4-finish",
+      "entrant": "ent_ghost_0004",
+      "at": {
+        "point": "lap-4-finish",
+        "along_m": 26880
+      },
+      "kind": "finished",
+      "t": "2027-06-21T22:26:57.468Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0004_lap-5-start",
+      "entrant": "ent_ghost_0004",
+      "at": {
+        "point": "lap-5-start",
+        "along_m": 26880
+      },
+      "kind": "passed",
+      "t": "2027-06-21T22:30:00.880Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0004_lap-5-finish",
+      "entrant": "ent_ghost_0004",
+      "at": {
+        "point": "lap-5-finish",
+        "along_m": 33600
+      },
+      "kind": "finished",
+      "t": "2027-06-21T23:26:54.238Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0005_gun",
+      "entrant": "ent_ghost_0005",
+      "at": {
+        "point": null,
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-06-21T18:30:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0005_lap-1-start",
+      "entrant": "ent_ghost_0005",
+      "at": {
+        "point": "lap-1-start",
+        "along_m": 0
+      },
+      "kind": "passed",
+      "t": "2027-06-21T18:29:57.711Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0005_lap-1-finish",
+      "entrant": "ent_ghost_0005",
+      "at": {
+        "point": "lap-1-finish",
+        "along_m": 6720
+      },
+      "kind": "finished",
+      "t": "2027-06-21T19:37:30.541Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0005_lap-2-start",
+      "entrant": "ent_ghost_0005",
+      "at": {
+        "point": "lap-2-start",
+        "along_m": 6720
+      },
+      "kind": "passed",
+      "t": "2027-06-21T20:30:02.465Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0005_lap-2-finish",
+      "entrant": "ent_ghost_0005",
+      "at": {
+        "point": "lap-2-finish",
+        "along_m": 13440
+      },
+      "kind": "finished",
+      "t": "2027-06-21T21:37:26.693Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0005_lap-3-start",
+      "entrant": "ent_ghost_0005",
+      "at": {
+        "point": "lap-3-start",
+        "along_m": 13440
+      },
+      "kind": "passed",
+      "t": "2027-06-21T22:29:57.814Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0005_lap-3-finish",
+      "entrant": "ent_ghost_0005",
+      "at": {
+        "point": "lap-3-finish",
+        "along_m": 20160
+      },
+      "kind": "finished",
+      "t": "2027-06-21T23:37:27.807Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0005_lap-4-start",
+      "entrant": "ent_ghost_0005",
+      "at": {
+        "point": "lap-4-start",
+        "along_m": 20160
+      },
+      "kind": "passed",
+      "t": "2027-06-22T00:29:58.045Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0005_out",
+      "entrant": "ent_ghost_0005",
+      "at": {
+        "point": "lap-4-start",
+        "along_m": 20160
+      },
+      "kind": "withdrew",
+      "t": "2027-06-22T00:30:01.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0006_gun",
+      "entrant": "ent_ghost_0006",
+      "at": {
+        "point": null,
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-06-21T18:30:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0006_lap-1-start",
+      "entrant": "ent_ghost_0006",
+      "at": {
+        "point": "lap-1-start",
+        "along_m": 0
+      },
+      "kind": "passed",
+      "t": "2027-06-21T18:30:02.757Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0006_lap-1-finish",
+      "entrant": "ent_ghost_0006",
+      "at": {
+        "point": "lap-1-finish",
+        "along_m": 6720
+      },
+      "kind": "finished",
+      "t": "2027-06-21T19:22:15.366Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0006_lap-2-start",
+      "entrant": "ent_ghost_0006",
+      "at": {
+        "point": "lap-2-start",
+        "along_m": 6720
+      },
+      "kind": "passed",
+      "t": "2027-06-21T19:30:00.038Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0006_lap-2-finish",
+      "entrant": "ent_ghost_0006",
+      "at": {
+        "point": "lap-2-finish",
+        "along_m": 13440
+      },
+      "kind": "finished",
+      "t": "2027-06-21T20:22:20.186Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0006_lap-3-start",
+      "entrant": "ent_ghost_0006",
+      "at": {
+        "point": "lap-3-start",
+        "along_m": 13440
+      },
+      "kind": "passed",
+      "t": "2027-06-21T20:30:02.195Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0006_lap-3-finish",
+      "entrant": "ent_ghost_0006",
+      "at": {
+        "point": "lap-3-finish",
+        "along_m": 20160
+      },
+      "kind": "finished",
+      "t": "2027-06-21T21:22:20.413Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0006_lap-4-start",
+      "entrant": "ent_ghost_0006",
+      "at": {
+        "point": "lap-4-start",
+        "along_m": 20160
+      },
+      "kind": "passed",
+      "t": "2027-06-21T21:29:57.198Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0006_lap-4-finish",
+      "entrant": "ent_ghost_0006",
+      "at": {
+        "point": "lap-4-finish",
+        "along_m": 26880
+      },
+      "kind": "finished",
+      "t": "2027-06-21T22:22:19.604Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0006_lap-5-start",
+      "entrant": "ent_ghost_0006",
+      "at": {
+        "point": "lap-5-start",
+        "along_m": 26880
+      },
+      "kind": "passed",
+      "t": "2027-06-21T22:29:57.700Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0006_lap-5-finish",
+      "entrant": "ent_ghost_0006",
+      "at": {
+        "point": "lap-5-finish",
+        "along_m": 33600
+      },
+      "kind": "finished",
+      "t": "2027-06-21T23:22:19.987Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0007_gun",
+      "entrant": "ent_ghost_0007",
+      "at": {
+        "point": null,
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-06-21T18:30:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0007_lap-1-start",
+      "entrant": "ent_ghost_0007",
+      "at": {
+        "point": "lap-1-start",
+        "along_m": 0
+      },
+      "kind": "passed",
+      "t": "2027-06-21T18:29:57.565Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0007_lap-1-finish",
+      "entrant": "ent_ghost_0007",
+      "at": {
+        "point": "lap-1-finish",
+        "along_m": 6720
+      },
+      "kind": "finished",
+      "t": "2027-06-21T19:35:45.259Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0007_lap-2-start",
+      "entrant": "ent_ghost_0007",
+      "at": {
+        "point": "lap-2-start",
+        "along_m": 6720
+      },
+      "kind": "passed",
+      "t": "2027-06-21T20:30:02.579Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0007_lap-2-finish",
+      "entrant": "ent_ghost_0007",
+      "at": {
+        "point": "lap-2-finish",
+        "along_m": 13440
+      },
+      "kind": "finished",
+      "t": "2027-06-21T21:35:44.315Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0007_lap-3-start",
+      "entrant": "ent_ghost_0007",
+      "at": {
+        "point": "lap-3-start",
+        "along_m": 13440
+      },
+      "kind": "passed",
+      "t": "2027-06-21T22:29:58.348Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0007_lap-3-finish",
+      "entrant": "ent_ghost_0007",
+      "at": {
+        "point": "lap-3-finish",
+        "along_m": 20160
+      },
+      "kind": "finished",
+      "t": "2027-06-21T23:35:44.022Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0007_lap-4-start",
+      "entrant": "ent_ghost_0007",
+      "at": {
+        "point": "lap-4-start",
+        "along_m": 20160
+      },
+      "kind": "passed",
+      "t": "2027-06-22T00:30:00.135Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0007_lap-4-finish",
+      "entrant": "ent_ghost_0007",
+      "at": {
+        "point": "lap-4-finish",
+        "along_m": 26880
+      },
+      "kind": "finished",
+      "t": "2027-06-22T01:35:43.890Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0007_lap-5-start",
+      "entrant": "ent_ghost_0007",
+      "at": {
+        "point": "lap-5-start",
+        "along_m": 26880
+      },
+      "kind": "passed",
+      "t": "2027-06-22T02:30:01.930Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_ent_ghost_0007_lap-5-finish",
+      "entrant": "ent_ghost_0007",
+      "at": {
+        "point": "lap-5-finish",
+        "along_m": 33600
+      },
+      "kind": "finished",
+      "t": "2027-06-22T03:35:41.876Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_ghost",
+      "confidence": 1,
+      "supersedes": null
+    }
+  ],
+  "expect": [
+    {
+      "entrant": "ent_ghost_0003",
+      "standing": "gated",
+      "total_ms": 32718779,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 5
+    },
+    {
+      "entrant": "ent_ghost_0007",
+      "standing": "gated",
+      "total_ms": 32741876,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 5
+    },
+    {
+      "entrant": "ent_ghost_0005",
+      "standing": "gated",
+      "total_ms": 18447807,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 3
+    },
+    {
+      "entrant": "ent_ghost_0000",
+      "standing": "clean",
+      "total_ms": 1000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 0
+    },
+    {
+      "entrant": "ent_ghost_0001",
+      "standing": "gated",
+      "total_ms": 5086566,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 1
+    },
+    {
+      "entrant": "ent_ghost_0002",
+      "standing": "clean",
+      "total_ms": 17280277,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 5
+    },
+    {
+      "entrant": "ent_ghost_0004",
+      "standing": "clean",
+      "total_ms": 17814238,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 5
+    },
+    {
+      "entrant": "ent_ghost_0006",
+      "standing": "clean",
+      "total_ms": 17539987,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 5
+    }
+  ]
+}

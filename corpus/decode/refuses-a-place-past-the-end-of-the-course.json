@@ -1,0 +1,121 @@
+{
+  "name": "refuses-a-place-past-the-end-of-the-course",
+  "why": "§2.1 — no place is beyond `path_length`. A rule bound past the end can never fire, and a race scored under it is scored as though the gate were not there.",
+  "expect": {
+    "verdict": "refuses",
+    "laws": ["a place is beyond the end of the course"],
+    "missing_dialects": [],
+    "refused": []
+  },
+  "document": {
+    "type": "FeatureCollection",
+    "pace-geojson": 1,
+    "pace:id": "crs_refuses-a-place-past-the-end-of-the-course",
+    "pace:event": "evt_decode-base",
+    "pace:way": null,
+    "pace:name": "refuses-a-place-past-the-end-of-the-course",
+    "pace:dialects": ["athletics@1"],
+    "pace:measure": {
+      "distance_m": 1000,
+      "distance_method": "wgs84-geodesic-2d",
+      "stated_m": 1000,
+      "certified_m": null,
+      "ascent_m": 0,
+      "descent_m": null,
+      "elevation_source": "file",
+      "elevation_smoothing": null,
+      "ascent_threshold_m": null
+    },
+    "pace:provenance": [
+      {
+        "source": "hand",
+        "origin_url": null,
+        "sha256": null,
+        "format": null,
+        "verified_by": null,
+        "verified_at": null
+      }
+    ],
+    "pace:path": [
+      {
+        "line": "ln_base",
+        "from_m": 0,
+        "to_m": 1000,
+        "repeat": 1
+      }
+    ],
+    "pace:rules": [
+      {
+        "id": "rul_cutoff",
+        "dialect": "athletics@1",
+        "kind": "cutoff_within",
+        "ordinal": 0,
+        "at": null,
+        "params": {
+          "within_ms": 600000
+        }
+      }
+    ],
+    "features": [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [0.5, 0.5, 0],
+            [0.503, 0.5, 0],
+            [0.506, 0.5, 0],
+            [0.509, 0.5, 0]
+          ]
+        },
+        "properties": {
+          "role": "line",
+          "id": "ln_base",
+          "polyline": null
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5, 0]
+        },
+        "properties": {
+          "role": "point",
+          "id": "start",
+          "kind": "start",
+          "name": "Start",
+          "along_m": 0
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5045, 0.5, 0]
+        },
+        "properties": {
+          "role": "point",
+          "id": "mat-500",
+          "kind": "mat",
+          "name": "500 m",
+          "along_m": 500
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.509, 0.5, 0]
+        },
+        "properties": {
+          "role": "point",
+          "id": "finish",
+          "kind": "finish",
+          "name": "Finish",
+          "along_m": 1001
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,322 @@
+{
+  "name": "triathlon-drafting-and-transition",
+  "why": "Drafting costs five minutes unless the referee flagged an overtake; the clock stops in transition. Both need parts of the kernel nothing else uses. The point kinds are the canonical ones (`transition_in`, `zone_out`) because a rule asking for `entered` at a place that only emits `passed` can never fire \u2014 see `mismatched_kinds`.",
+  "document": {
+    "type": "FeatureCollection",
+    "pace-geojson": 1,
+    "pace:id": "crs_conformance",
+    "pace:event": "evt_conformance",
+    "pace:way": null,
+    "pace:name": "Conformance triathlon",
+    "pace:dialects": ["triathlon@1"],
+    "pace:measure": {
+      "distance_m": null,
+      "distance_method": null,
+      "stated_m": null,
+      "certified_m": null,
+      "ascent_m": null,
+      "descent_m": null,
+      "elevation_source": null,
+      "elevation_smoothing": null,
+      "ascent_threshold_m": null
+    },
+    "pace:provenance": [],
+    "pace:path": [
+      {
+        "line": "ln_1",
+        "from_m": 0,
+        "to_m": 51500,
+        "repeat": 1
+      }
+    ],
+    "pace:rules": [
+      {
+        "id": "rul_draft",
+        "dialect": "triathlon@1",
+        "kind": "drafting",
+        "ordinal": 0,
+        "at": null,
+        "params": {
+          "seconds_ms": 25000,
+          "penalty_ms": 300000,
+          "from_m": 5000,
+          "to_m": 5100
+        }
+      },
+      {
+        "id": "rul_t",
+        "dialect": "triathlon@1",
+        "kind": "transition_neutral",
+        "ordinal": 1,
+        "at": null,
+        "params": {
+          "from_m": 1900,
+          "to_m": 2000
+        }
+      }
+    ],
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "line",
+          "id": "ln_1",
+          "polyline": null
+        },
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [0.5, 0.5],
+            [0.51, 0.51]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "transition-in",
+          "kind": "transition_in",
+          "name": null,
+          "along_m": 1900
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "transition-out",
+          "kind": "transition_out",
+          "name": null,
+          "along_m": 2000
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "draft-zone-enter",
+          "kind": "zone_in",
+          "name": null,
+          "along_m": 5000
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "draft-zone-leave",
+          "kind": "zone_out",
+          "name": null,
+          "along_m": 5100
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      }
+    ]
+  },
+  "log": [
+    {
+      "id": "obs_1",
+      "entrant": "ent_sat",
+      "at": {
+        "point": null,
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-05-02T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_2",
+      "entrant": "ent_sat",
+      "at": {
+        "point": "transition-in",
+        "along_m": 1900
+      },
+      "kind": "entered",
+      "t": "2027-05-02T07:30:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_3",
+      "entrant": "ent_sat",
+      "at": {
+        "point": "transition-out",
+        "along_m": 2000
+      },
+      "kind": "passed",
+      "t": "2027-05-02T07:33:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_4",
+      "entrant": "ent_sat",
+      "at": {
+        "point": "draft-zone-enter",
+        "along_m": 5000
+      },
+      "kind": "entered",
+      "t": "2027-05-02T07:40:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_5",
+      "entrant": "ent_sat",
+      "at": {
+        "point": "draft-zone-leave",
+        "along_m": 5100
+      },
+      "kind": "left",
+      "t": "2027-05-02T07:41:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_6",
+      "entrant": "ent_sat",
+      "at": {
+        "point": null,
+        "along_m": 51500
+      },
+      "kind": "finished",
+      "t": "2027-05-02T09:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_7",
+      "entrant": "ent_past",
+      "at": {
+        "point": null,
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-05-02T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_8",
+      "entrant": "ent_past",
+      "at": {
+        "point": "draft-zone-enter",
+        "along_m": 5000
+      },
+      "kind": "entered",
+      "t": "2027-05-02T07:40:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": ["overtaking"],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_9",
+      "entrant": "ent_past",
+      "at": {
+        "point": "draft-zone-leave",
+        "along_m": 5100
+      },
+      "kind": "left",
+      "t": "2027-05-02T07:41:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_10",
+      "entrant": "ent_past",
+      "at": {
+        "point": null,
+        "along_m": 51500
+      },
+      "kind": "finished",
+      "t": "2027-05-02T09:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    }
+  ],
+  "expect": [
+    {
+      "entrant": "ent_sat",
+      "standing": "penalised",
+      "total_ms": 7320000,
+      "adjustment_ms": 300000,
+      "awards": [],
+      "laps": 1
+    },
+    {
+      "entrant": "ent_past",
+      "standing": "clean",
+      "total_ms": 7200000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 1
+    }
+  ]
+}

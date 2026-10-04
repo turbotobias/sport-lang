@@ -1,0 +1,300 @@
+{
+  "name": "athletics-outside-help-and-a-retracted-flag",
+  "why": "`no_outside_help` disqualifies on an `outside_help` flag anywhere in the entrant’s settled log. A marshal flags two runners at 5 km; one flag is retracted by a correction that supersedes it and carries no flag. The flag that stands disqualifies; the retracted one is gone before any rule reads the log, so that runner is clean — a correction is a new observation, never an edit.",
+  "document": {
+    "type": "FeatureCollection",
+    "pace-geojson": 1,
+    "pace:id": "crs_outside-help",
+    "pace:event": "evt_conformance",
+    "pace:way": null,
+    "pace:name": "Conformance 10K",
+    "pace:dialects": ["athletics@1"],
+    "pace:measure": {
+      "distance_m": null,
+      "distance_method": null,
+      "stated_m": null,
+      "certified_m": null,
+      "ascent_m": null,
+      "descent_m": null,
+      "elevation_source": null,
+      "elevation_smoothing": null,
+      "ascent_threshold_m": null
+    },
+    "pace:provenance": [],
+    "pace:path": [
+      {
+        "line": "ln_1",
+        "from_m": 0,
+        "to_m": 10000,
+        "repeat": 1
+      }
+    ],
+    "pace:rules": [
+      {
+        "id": "rul_help",
+        "dialect": "athletics@1",
+        "kind": "no_outside_help",
+        "ordinal": 0,
+        "at": null,
+        "params": {}
+      }
+    ],
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "line",
+          "id": "ln_1",
+          "polyline": null
+        },
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [0.5, 0.5],
+            [0.5, 0.51]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "start",
+          "kind": "start",
+          "name": "Start",
+          "along_m": 0
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "mat-5k",
+          "kind": "mat",
+          "name": "5 km",
+          "along_m": 5000
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "finish",
+          "kind": "finish",
+          "name": "Finish",
+          "along_m": 10000
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      }
+    ]
+  },
+  "log": [
+    {
+      "id": "obs_01",
+      "entrant": "ent_helped",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-05-02T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_02",
+      "entrant": "ent_retracted",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-05-02T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_03",
+      "entrant": "ent_alone",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-05-02T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_04",
+      "entrant": "ent_retracted",
+      "at": {
+        "point": "mat-5k",
+        "along_m": 5000
+      },
+      "kind": "passed",
+      "t": "2027-05-02T07:24:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": ["outside_help"],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_05",
+      "entrant": "ent_helped",
+      "at": {
+        "point": "mat-5k",
+        "along_m": 5000
+      },
+      "kind": "passed",
+      "t": "2027-05-02T07:25:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": ["outside_help"],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_06",
+      "entrant": "ent_alone",
+      "at": {
+        "point": "mat-5k",
+        "along_m": 5000
+      },
+      "kind": "passed",
+      "t": "2027-05-02T07:27:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_07",
+      "entrant": "ent_retracted",
+      "at": {
+        "point": "mat-5k",
+        "along_m": 5000
+      },
+      "kind": "passed",
+      "t": "2027-05-02T07:24:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "manual",
+      "device": null,
+      "confidence": 1,
+      "supersedes": "obs_04"
+    },
+    {
+      "id": "obs_08",
+      "entrant": "ent_retracted",
+      "at": {
+        "point": "finish",
+        "along_m": 10000
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:48:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_09",
+      "entrant": "ent_helped",
+      "at": {
+        "point": "finish",
+        "along_m": 10000
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:50:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_10",
+      "entrant": "ent_alone",
+      "at": {
+        "point": "finish",
+        "along_m": 10000
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:57:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_1",
+      "confidence": 1,
+      "supersedes": null
+    }
+  ],
+  "expect": [
+    {
+      "entrant": "ent_helped",
+      "standing": "disqualified",
+      "total_ms": 3000000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 1
+    },
+    {
+      "entrant": "ent_retracted",
+      "standing": "clean",
+      "total_ms": 2880000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 1
+    },
+    {
+      "entrant": "ent_alone",
+      "standing": "clean",
+      "total_ms": 3420000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 1
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+# The library was hand-formatted to about 110 columns, and a default-width
+# rustfmt reflows every file of it the first time anybody runs `cargo fmt`.
+# 120 sits above what the existing code reaches, so formatting is available to
+# new code without rewriting the old.
+max_width = 120

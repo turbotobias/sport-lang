@@ -1,0 +1,141 @@
+{
+  "type": "FeatureCollection",
+  "pace-geojson": 1,
+  "pace:id": "crs_example_10k",
+  "pace:event": "evt_example",
+  "pace:way": null,
+  "pace:name": "Example 10K",
+  "pace:dialects": ["athletics@1"],
+  "pace:measure": {
+    "distance_m": 10000,
+    "distance_method": "wgs84-geodesic-2d",
+    "stated_m": 10000,
+    "certified_m": null,
+    "ascent_m": 0,
+    "descent_m": 0,
+    "elevation_source": null,
+    "elevation_smoothing": null,
+    "ascent_threshold_m": null
+  },
+  "pace:provenance": [],
+  "pace:path": [
+    {
+      "line": "ln_1",
+      "from_m": 0,
+      "to_m": 10000,
+      "repeat": 1
+    }
+  ],
+  "pace:rules": [
+    {
+      "id": "rul_gate",
+      "dialect": "athletics@1",
+      "kind": "cutoff_at",
+      "ordinal": 0,
+      "at": {
+        "point": "km-5",
+        "along_m": 5000
+      },
+      "params": {
+        "at": "2027-05-02T07:40:00.000Z",
+        "says": "07:40"
+      }
+    },
+    {
+      "id": "rul_station",
+      "dialect": "athletics@1",
+      "kind": "station_required",
+      "ordinal": 1,
+      "at": {
+        "point": "km-5",
+        "along_m": 5000
+      },
+      "params": {
+        "penalty_ms": 120000,
+        "each_time": false
+      }
+    },
+    {
+      "id": "rul_help",
+      "dialect": "athletics@1",
+      "kind": "no_outside_help",
+      "ordinal": 2,
+      "at": null,
+      "params": {}
+    },
+    {
+      "id": "rul_sub50",
+      "dialect": "athletics@1",
+      "kind": "qualifies_within",
+      "ordinal": 3,
+      "at": {
+        "point": "finish",
+        "along_m": 10000
+      },
+      "params": {
+        "within_ms": 3000000,
+        "award": "sub-50"
+      }
+    }
+  ],
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "role": "line",
+        "id": "ln_1",
+        "polyline": null
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [0.5, 0.5],
+          [0.5, 0.545218],
+          [0.5, 0.590437]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "role": "point",
+        "id": "start",
+        "kind": "start",
+        "name": "Start",
+        "along_m": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [0.5, 0.5]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "role": "point",
+        "id": "km-5",
+        "kind": "control",
+        "name": "5 km",
+        "along_m": 5000
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [0.5, 0.545218]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "role": "point",
+        "id": "finish",
+        "kind": "finish",
+        "name": "Finish",
+        "along_m": 10000
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [0.5, 0.590437]
+      }
+    }
+  ]
+}

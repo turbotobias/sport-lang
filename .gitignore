@@ -1,0 +1,13 @@
+target/
+wasm/pkg/
+wasm/pkg-node/
+ts/node_modules/
+ts/dist/
+ts/.tsbuildinfo/
+*.tsbuildinfo
+# Put there by `ts/scripts/pack.mjs` for the length of a pack, then removed.
+ts/.package.json.source
+ts/LICENSE
+ts/NOTICE
+ts/README.md
+*.tgz

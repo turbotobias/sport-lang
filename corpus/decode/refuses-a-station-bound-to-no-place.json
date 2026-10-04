@@ -1,0 +1,137 @@
+{
+  "name": "refuses-a-station-bound-to-no-place",
+  "why": "§3.4 — `station_required` means nothing without a place. Bound to `null` it used to be read as the start line, so every runner who punched the real station was penalised for missing it: a rule nobody could satisfy, run. It needs a place, and is refused without one.",
+  "expect": {
+    "verdict": "refuses",
+    "laws": [],
+    "missing_dialects": [],
+    "refused": [
+      {
+        "id": "rul_station",
+        "why": "needs a place"
+      }
+    ]
+  },
+  "document": {
+    "type": "FeatureCollection",
+    "pace-geojson": 1,
+    "pace:id": "crs_refuses-a-station-bound-to-no-place",
+    "pace:event": "evt_decode-base",
+    "pace:way": null,
+    "pace:name": "refuses-a-station-bound-to-no-place",
+    "pace:dialects": ["athletics@1"],
+    "pace:measure": {
+      "distance_m": 1000,
+      "distance_method": "wgs84-geodesic-2d",
+      "stated_m": 1000,
+      "certified_m": null,
+      "ascent_m": 0,
+      "descent_m": null,
+      "elevation_source": "file",
+      "elevation_smoothing": null,
+      "ascent_threshold_m": null
+    },
+    "pace:provenance": [
+      {
+        "source": "hand",
+        "origin_url": null,
+        "sha256": null,
+        "format": null,
+        "verified_by": null,
+        "verified_at": null
+      }
+    ],
+    "pace:path": [
+      {
+        "line": "ln_base",
+        "from_m": 0,
+        "to_m": 1000,
+        "repeat": 1
+      }
+    ],
+    "pace:rules": [
+      {
+        "id": "rul_cutoff",
+        "dialect": "athletics@1",
+        "kind": "cutoff_within",
+        "ordinal": 0,
+        "at": null,
+        "params": {
+          "within_ms": 600000
+        }
+      },
+      {
+        "id": "rul_station",
+        "dialect": "athletics@1",
+        "kind": "station_required",
+        "ordinal": 1,
+        "at": null,
+        "params": {
+          "penalty_ms": 60000,
+          "each_time": false
+        }
+      }
+    ],
+    "features": [
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [0.5, 0.5, 0],
+            [0.503, 0.5, 0],
+            [0.506, 0.5, 0],
+            [0.509, 0.5, 0]
+          ]
+        },
+        "properties": {
+          "role": "line",
+          "id": "ln_base",
+          "polyline": null
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5, 0]
+        },
+        "properties": {
+          "role": "point",
+          "id": "start",
+          "kind": "start",
+          "name": "Start",
+          "along_m": 0
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5045, 0.5, 0]
+        },
+        "properties": {
+          "role": "point",
+          "id": "mat-500",
+          "kind": "control",
+          "name": "500 m",
+          "along_m": 500
+        }
+      },
+      {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.509, 0.5, 0]
+        },
+        "properties": {
+          "role": "point",
+          "id": "finish",
+          "kind": "finish",
+          "name": "Finish",
+          "along_m": 1000
+        }
+      }
+    ]
+  }
+}

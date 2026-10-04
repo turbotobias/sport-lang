@@ -1,0 +1,444 @@
+{
+  "name": "example-10k-the-readme-race",
+  "why": "The README’s race, byte for byte the document and log in examples/10k: a wall-clock gate and a required station at 5 km, outside help, a qualifying time bound to the finish, and a finish keyed in wrong and superseded. One clean runner under fifty minutes, one gated, one penalised for the read the mat dropped, one clean whose corrected finish qualifies, one disqualified. Here so the example a reader starts from is a case both engines are held to, not only a test.",
+  "document": {
+    "type": "FeatureCollection",
+    "pace-geojson": 1,
+    "pace:id": "crs_example_10k",
+    "pace:event": "evt_example",
+    "pace:way": null,
+    "pace:name": "Example 10K",
+    "pace:dialects": ["athletics@1"],
+    "pace:measure": {
+      "distance_m": 10000,
+      "distance_method": "wgs84-geodesic-2d",
+      "stated_m": 10000,
+      "certified_m": null,
+      "ascent_m": 0,
+      "descent_m": 0,
+      "elevation_source": null,
+      "elevation_smoothing": null,
+      "ascent_threshold_m": null
+    },
+    "pace:provenance": [],
+    "pace:path": [
+      {
+        "line": "ln_1",
+        "from_m": 0,
+        "to_m": 10000,
+        "repeat": 1
+      }
+    ],
+    "pace:rules": [
+      {
+        "id": "rul_gate",
+        "dialect": "athletics@1",
+        "kind": "cutoff_at",
+        "ordinal": 0,
+        "at": {
+          "point": "km-5",
+          "along_m": 5000
+        },
+        "params": {
+          "at": "2027-05-02T07:40:00.000Z",
+          "says": "07:40"
+        }
+      },
+      {
+        "id": "rul_station",
+        "dialect": "athletics@1",
+        "kind": "station_required",
+        "ordinal": 1,
+        "at": {
+          "point": "km-5",
+          "along_m": 5000
+        },
+        "params": {
+          "penalty_ms": 120000,
+          "each_time": false
+        }
+      },
+      {
+        "id": "rul_help",
+        "dialect": "athletics@1",
+        "kind": "no_outside_help",
+        "ordinal": 2,
+        "at": null,
+        "params": {}
+      },
+      {
+        "id": "rul_sub50",
+        "dialect": "athletics@1",
+        "kind": "qualifies_within",
+        "ordinal": 3,
+        "at": {
+          "point": "finish",
+          "along_m": 10000
+        },
+        "params": {
+          "within_ms": 3000000,
+          "award": "sub-50"
+        }
+      }
+    ],
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "line",
+          "id": "ln_1",
+          "polyline": null
+        },
+        "geometry": {
+          "type": "LineString",
+          "coordinates": [
+            [0.5, 0.5],
+            [0.5, 0.545218],
+            [0.5, 0.590437]
+          ]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "start",
+          "kind": "start",
+          "name": "Start",
+          "along_m": 0
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.5]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "km-5",
+          "kind": "control",
+          "name": "5 km",
+          "along_m": 5000
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.545218]
+        }
+      },
+      {
+        "type": "Feature",
+        "properties": {
+          "role": "point",
+          "id": "finish",
+          "kind": "finish",
+          "name": "Finish",
+          "along_m": 10000
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [0.5, 0.590437]
+        }
+      }
+    ]
+  },
+  "log": [
+    {
+      "id": "obs_01",
+      "entrant": "ent_ana",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-05-02T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_start",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_02",
+      "entrant": "ent_ben",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-05-02T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_start",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_03",
+      "entrant": "ent_cy",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-05-02T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_start",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_04",
+      "entrant": "ent_dee",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-05-02T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_start",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_05",
+      "entrant": "ent_eve",
+      "at": {
+        "point": "start",
+        "along_m": 0
+      },
+      "kind": "started",
+      "t": "2027-05-02T07:00:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_start",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_06",
+      "entrant": "ent_ana",
+      "at": {
+        "point": "km-5",
+        "along_m": 5000
+      },
+      "kind": "punched",
+      "t": "2027-05-02T07:22:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_km5",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_07",
+      "entrant": "ent_dee",
+      "at": {
+        "point": "km-5",
+        "along_m": 5000
+      },
+      "kind": "punched",
+      "t": "2027-05-02T07:24:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_km5",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_08",
+      "entrant": "ent_eve",
+      "at": {
+        "point": "km-5",
+        "along_m": 5000
+      },
+      "kind": "punched",
+      "t": "2027-05-02T07:26:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": ["outside_help"],
+      "source": "manual",
+      "device": "dev_marshal",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_09",
+      "entrant": "ent_ben",
+      "at": {
+        "point": "km-5",
+        "along_m": 5000
+      },
+      "kind": "punched",
+      "t": "2027-05-02T07:41:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_km5",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_10",
+      "entrant": "ent_ana",
+      "at": {
+        "point": "finish",
+        "along_m": 10000
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:46:30.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_finish",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_11",
+      "entrant": "ent_dee",
+      "at": {
+        "point": "finish",
+        "along_m": 10000
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:58:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "manual",
+      "device": "dev_marshal",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_12",
+      "entrant": "ent_cy",
+      "at": {
+        "point": "finish",
+        "along_m": 10000
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:52:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_finish",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_13",
+      "entrant": "ent_eve",
+      "at": {
+        "point": "finish",
+        "along_m": 10000
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:55:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_finish",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_14",
+      "entrant": "ent_ben",
+      "at": {
+        "point": "finish",
+        "along_m": 10000
+      },
+      "kind": "finished",
+      "t": "2027-05-02T08:25:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "transponder",
+      "device": "dev_finish",
+      "confidence": 1,
+      "supersedes": null
+    },
+    {
+      "id": "obs_15",
+      "entrant": "ent_dee",
+      "at": {
+        "point": "finish",
+        "along_m": 10000
+      },
+      "kind": "finished",
+      "t": "2027-05-02T07:48:00.000Z",
+      "quantity_name": null,
+      "quantity_value": null,
+      "flags": [],
+      "source": "manual",
+      "device": "dev_marshal",
+      "confidence": 1,
+      "supersedes": "obs_11"
+    }
+  ],
+  "expect": [
+    {
+      "entrant": "ent_ana",
+      "standing": "clean",
+      "total_ms": 2790000,
+      "adjustment_ms": 0,
+      "awards": ["sub-50"],
+      "laps": 1
+    },
+    {
+      "entrant": "ent_ben",
+      "standing": "gated",
+      "total_ms": 5100000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 1
+    },
+    {
+      "entrant": "ent_cy",
+      "standing": "penalised",
+      "total_ms": 3240000,
+      "adjustment_ms": 120000,
+      "awards": [],
+      "laps": 1
+    },
+    {
+      "entrant": "ent_dee",
+      "standing": "clean",
+      "total_ms": 2880000,
+      "adjustment_ms": 0,
+      "awards": ["sub-50"],
+      "laps": 1
+    },
+    {
+      "entrant": "ent_eve",
+      "standing": "disqualified",
+      "total_ms": 3300000,
+      "adjustment_ms": 0,
+      "awards": [],
+      "laps": 1
+    }
+  ]
+}

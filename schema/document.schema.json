@@ -1,0 +1,740 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/turbotobias/pace-geojson/main/schema/document.schema.json",
+  "title": "pace-geojson course document",
+  "description": "One way in to one event — a distance, a category — as a GeoJSON FeatureCollection whose rules travel in `pace:` members (SPEC.md §2.1, §2.2). This schema carries the per-field laws: `pace-geojson` a whole number from 1, longitude in [-180, 180] and latitude in [-90, 90], a LineString of at least two positions, every `along_m`, `from_m` and `to_m` on a feature or a path slice at least 0, and `repeat` at least 1. It cannot carry the cross-document laws, which need an engine: no feature id used twice, every segment and path slice ending after it starts, a path naming only lines the document carries, at least one line, no place beyond the end of the path, every point a rule names present, and a rule requiring an observation only at a place that produces it. Nor does it read a rule’s `params`, which belong to its dialect, or know which kinds need a place (`station_required`, `qualifies_within`). A document this schema accepts can still be refused to run. Members not named here are allowed and ignored, like GeoJSON foreign members. A version other than 1 is a document this specification does not run: an engine refuses it and still draws it (SPEC.md §7). Generated from ts/src/document.ts by ts/scripts/make-schema.ts; do not edit by hand.",
+  "type": "object",
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["FeatureCollection"]
+    },
+    "pace-geojson": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "The format version, a whole number from 1. This specification is version 1 (SPEC.md §7)."
+    },
+    "pace:id": {
+      "$ref": "#/$defs/DocumentId"
+    },
+    "pace:event": {
+      "$ref": "#/$defs/EventId"
+    },
+    "pace:way": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/WayId"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "pace:name": {
+      "type": "string"
+    },
+    "pace:dialects": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "pace:measure": {
+      "type": "object",
+      "properties": {
+        "distance_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "distance_method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "stated_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "certified_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ascent_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "descent_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "elevation_source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "elevation_smoothing": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ascent_threshold_m": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "distance_m",
+        "distance_method",
+        "stated_m",
+        "certified_m",
+        "ascent_m",
+        "descent_m",
+        "elevation_source",
+        "elevation_smoothing",
+        "ascent_threshold_m"
+      ],
+      "additionalProperties": true
+    },
+    "pace:provenance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "origin_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sha256": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "format": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "verified_by": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "verified_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": ["source", "origin_url", "sha256", "format", "verified_by", "verified_at"],
+        "additionalProperties": true
+      }
+    },
+    "pace:path": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "line": {
+            "$ref": "#/$defs/LineId"
+          },
+          "from_m": {
+            "type": "number",
+            "minimum": 0
+          },
+          "to_m": {
+            "type": "number",
+            "minimum": 0
+          },
+          "repeat": {
+            "type": "number",
+            "minimum": 1
+          }
+        },
+        "required": ["line", "from_m", "to_m", "repeat"],
+        "additionalProperties": true
+      }
+    },
+    "pace:rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "$ref": "#/$defs/RuleId"
+          },
+          "dialect": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "ordinal": {
+            "type": "number"
+          },
+          "at": {
+            "anyOf": [
+              {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "point": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/$defs/PointId"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "along_m": {
+                        "type": "number"
+                      }
+                    },
+                    "required": ["point", "along_m"],
+                    "additionalProperties": true
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "from_m": {
+                        "type": "number"
+                      },
+                      "to_m": {
+                        "type": "number"
+                      }
+                    },
+                    "required": ["from_m", "to_m"],
+                    "additionalProperties": true
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "params": {}
+        },
+        "required": ["id", "dialect", "kind", "ordinal", "at", "params"],
+        "additionalProperties": true
+      }
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["Feature"]
+              },
+              "properties": {
+                "type": "object",
+                "properties": {
+                  "role": {
+                    "type": "string",
+                    "enum": ["line"]
+                  },
+                  "id": {
+                    "$ref": "#/$defs/LineId"
+                  },
+                  "polyline": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": ["role", "id", "polyline"],
+                "additionalProperties": true
+              },
+              "geometry": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["LineString"]
+                  },
+                  "coordinates": {
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "type": "array",
+                          "prefixItems": [
+                            {
+                              "type": "number",
+                              "minimum": -180,
+                              "maximum": 180
+                            },
+                            {
+                              "type": "number",
+                              "minimum": -90,
+                              "maximum": 90
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ],
+                          "maxItems": 3,
+                          "minItems": 3
+                        },
+                        {
+                          "type": "array",
+                          "prefixItems": [
+                            {
+                              "type": "number",
+                              "minimum": -180,
+                              "maximum": 180
+                            },
+                            {
+                              "type": "number",
+                              "minimum": -90,
+                              "maximum": 90
+                            }
+                          ],
+                          "maxItems": 2,
+                          "minItems": 2
+                        }
+                      ]
+                    },
+                    "minItems": 2
+                  }
+                },
+                "required": ["type", "coordinates"],
+                "additionalProperties": true
+              }
+            },
+            "required": ["type", "properties", "geometry"],
+            "additionalProperties": true
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["Feature"]
+              },
+              "properties": {
+                "type": "object",
+                "properties": {
+                  "role": {
+                    "type": "string",
+                    "enum": ["point"]
+                  },
+                  "id": {
+                    "$ref": "#/$defs/PointId"
+                  },
+                  "kind": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "along_m": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "required": ["role", "id", "kind", "name", "along_m"],
+                "additionalProperties": true
+              },
+              "geometry": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["Point"]
+                  },
+                  "coordinates": {
+                    "anyOf": [
+                      {
+                        "type": "array",
+                        "prefixItems": [
+                          {
+                            "type": "number",
+                            "minimum": -180,
+                            "maximum": 180
+                          },
+                          {
+                            "type": "number",
+                            "minimum": -90,
+                            "maximum": 90
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ],
+                        "maxItems": 3,
+                        "minItems": 3
+                      },
+                      {
+                        "type": "array",
+                        "prefixItems": [
+                          {
+                            "type": "number",
+                            "minimum": -180,
+                            "maximum": 180
+                          },
+                          {
+                            "type": "number",
+                            "minimum": -90,
+                            "maximum": 90
+                          }
+                        ],
+                        "maxItems": 2,
+                        "minItems": 2
+                      }
+                    ]
+                  }
+                },
+                "required": ["type", "coordinates"],
+                "additionalProperties": true
+              }
+            },
+            "required": ["type", "properties", "geometry"],
+            "additionalProperties": true
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["Feature"]
+              },
+              "properties": {
+                "type": "object",
+                "properties": {
+                  "role": {
+                    "type": "string",
+                    "enum": ["segment"]
+                  },
+                  "id": {
+                    "$ref": "#/$defs/SegmentId"
+                  },
+                  "kind": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "from_m": {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  "to_m": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "required": ["role", "id", "kind", "name", "from_m", "to_m"],
+                "additionalProperties": true
+              },
+              "geometry": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["LineString"]
+                  },
+                  "coordinates": {
+                    "type": "array",
+                    "items": {
+                      "anyOf": [
+                        {
+                          "type": "array",
+                          "prefixItems": [
+                            {
+                              "type": "number",
+                              "minimum": -180,
+                              "maximum": 180
+                            },
+                            {
+                              "type": "number",
+                              "minimum": -90,
+                              "maximum": 90
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ],
+                          "maxItems": 3,
+                          "minItems": 3
+                        },
+                        {
+                          "type": "array",
+                          "prefixItems": [
+                            {
+                              "type": "number",
+                              "minimum": -180,
+                              "maximum": 180
+                            },
+                            {
+                              "type": "number",
+                              "minimum": -90,
+                              "maximum": 90
+                            }
+                          ],
+                          "maxItems": 2,
+                          "minItems": 2
+                        }
+                      ]
+                    },
+                    "minItems": 2
+                  }
+                },
+                "required": ["type", "coordinates"],
+                "additionalProperties": true
+              }
+            },
+            "required": ["type", "properties", "geometry"],
+            "additionalProperties": true
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": ["Feature"]
+              },
+              "properties": {
+                "type": "object",
+                "properties": {
+                  "role": {
+                    "type": "string",
+                    "enum": ["zone"]
+                  },
+                  "id": {
+                    "$ref": "#/$defs/SegmentId"
+                  },
+                  "kind": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": ["role", "id", "kind", "name"],
+                "additionalProperties": true
+              },
+              "geometry": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": ["Polygon"]
+                  },
+                  "coordinates": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "anyOf": [
+                          {
+                            "type": "array",
+                            "prefixItems": [
+                              {
+                                "type": "number",
+                                "minimum": -180,
+                                "maximum": 180
+                              },
+                              {
+                                "type": "number",
+                                "minimum": -90,
+                                "maximum": 90
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ],
+                            "maxItems": 3,
+                            "minItems": 3
+                          },
+                          {
+                            "type": "array",
+                            "prefixItems": [
+                              {
+                                "type": "number",
+                                "minimum": -180,
+                                "maximum": 180
+                              },
+                              {
+                                "type": "number",
+                                "minimum": -90,
+                                "maximum": 90
+                              }
+                            ],
+                            "maxItems": 2,
+                            "minItems": 2
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "required": ["type", "coordinates"],
+                "additionalProperties": true
+              }
+            },
+            "required": ["type", "properties", "geometry"],
+            "additionalProperties": true
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "type",
+    "pace-geojson",
+    "pace:id",
+    "pace:event",
+    "pace:way",
+    "pace:name",
+    "pace:dialects",
+    "pace:measure",
+    "pace:provenance",
+    "pace:path",
+    "pace:rules",
+    "features"
+  ],
+  "additionalProperties": true,
+  "$defs": {
+    "DocumentId": {
+      "type": "string",
+      "description": "One course document — `pace:id`"
+    },
+    "EventId": {
+      "type": "string",
+      "description": "The event a document belongs to — `pace:event`"
+    },
+    "WayId": {
+      "type": "string",
+      "description": "The entry option an entrant signs up for — `pace:way`"
+    },
+    "LineId": {
+      "type": "string",
+      "description": "A line a course document draws over"
+    },
+    "RuleId": {
+      "type": "string",
+      "description": "One rule sentence"
+    },
+    "PointId": {
+      "type": "string",
+      "description": "A named place on a course document — `lap-3-finish`"
+    },
+    "SegmentId": {
+      "type": "string",
+      "description": "A named stretch of a course document"
+    }
+  }
+}
