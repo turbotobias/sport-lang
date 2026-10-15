@@ -39,6 +39,7 @@ import { assert, describe, it } from '@effect/vitest'
 import * as DateTime from 'effect/DateTime'
 import * as Result from 'effect/Result'
 import * as Schema from 'effect/Schema'
+import * as Struct from 'effect/Struct'
 import { execFileSync } from 'node:child_process'
 import {
   cpSync,
@@ -281,7 +282,7 @@ describe('the 10 km, beyond its standings', () => {
       why: Schema.decodeUnknownSync(Schema.Struct({ why: Schema.String }))(kase).why,
       document: raw,
       log: json('examples/10k/log.json'),
-      expect: standings.map(({ sentences: _, ...state }) => state),
+      expect: standings.map((standing) => Struct.omit(standing, ['sentences'])),
     })
   })
 

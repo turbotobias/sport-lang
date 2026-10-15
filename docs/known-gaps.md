@@ -43,7 +43,31 @@ deliberate boundary or open work; a contribution that closes one lands as a corp
   it in 13 of 28 penalties.
 - **Whole numbers are a convention.** Times and distances are integer milliseconds and metres by
   convention; neither engine enforces it at decode. Only `pace-geojson` and a backyard `lap` are
-  checked as integers.
+  checked as integers. A fraction is folded as the double it is — the one nearest to what is
+  written, in both engines, however many digits that is
+  ([SPEC §1](../SPEC.md#1-what-is-portable-and-what-is-not)). They write the same number back
+  up to 2⁵³ − 1; past it, see the next entry but one.
+- **A value has lost what its text did.** The two laws of the text
+  ([SPEC §2](../SPEC.md#2-the-data)) — no member named twice, no half of a surrogate pair — are
+  checked by `parse_document`, `parse_log` and a `run` handed text, in both engines. A host that
+  parses a file itself and hands over the value (`decode_document`, `decode_log` or a `run`
+  handed values in TypeScript; `serde_json::from_str::<CourseDocument>` in Rust) is past the
+  point where a repeated member can be seen: its parser kept one of the two. Everything else is
+  still checked. Hand over the text.
+- **Where the two engines still differ.** Four places, none of them in a file a producer writes:
+  the order of two ids when one holds a character from U+E000 to U+FFFF and the other a
+  character past U+FFFF; a number no double holds (`1e999`), and nesting 128 deep, inside a
+  rule's `at` or `params` or a feature's `geometry` or `properties`; and a whole number past
+  2⁵³ − 1, written out differently. [SPEC §5a](../SPEC.md#5a-two-engines-one-author) says what
+  each engine does with each, and `ts/test/differential.test.ts` holds the list: it fails the
+  day one of them stops being true.
+- **One corpus case holds the nearest double, and only its far end.** A decimal of sixteen
+  digits or more is read as the same number by both engines, and the differential test sweeps
+  for it; that test needs both engines. The corpus holds a third implementation to one such
+  number, the largest double written long (`accepts-the-largest-double-written-long`), and to
+  none that a quicker reader gets a step out: a conformance case carries its files as values,
+  and a value has lost how its number was written. The corpus has 66 other decimals that long,
+  every one a position, and no position reaches an answer.
 - **The kernel reaches further than the dialects.** Every kind has its case, but no shipped kind
   uses the `moving` clock, `classify`, a `count` of anything but laps, or the `rank`, `finishers`
   and `winner_elapsed` aggregates, so no case pins them ([SPEC §5](../SPEC.md#5-conforming)).
@@ -52,21 +76,22 @@ deliberate boundary or open work; a contribution that closes one lands as a corp
   ([SPEC §3.2](../SPEC.md#32-the-kernel), _Replay_). Both engines settle the log with one sort,
   partition it by entrant in one pass, and then work entrant by entrant, so a fold grows with the
   log, not with the log times the field. A simulated marathon (`corpus/courses/marathon.json`,
-  seed 7, a mat every 5 km and the five `athletics@1` kinds), from the JSON a host receives to the
-  encoded answer, median of three on an Apple M1 Max under Node 26.10:
+  seed 7, a mat every 5 km and the five `athletics@1` kinds), from the two texts a host receives
+  to the encoded answer — the laws of the text checked on the way in — median of three on an
+  Apple M1 Max under Node 26.10:
 
   | entrants | observations | TypeScript `run` | WebAssembly `run` | TypeScript `fold_until` |
   | ---: | ---: | ---: | ---: | ---: |
-  | 1 000 | 8 850 | 0.08 s | 0.03 s | 0.02 s |
-  | 10 000 | 88 024 | 0.64 s | 0.26 s | 0.23 s |
-  | 30 000 | 263 872 | 2.4 s | 0.96 s | 0.57 s |
+  | 1 000 | 8 850 | 0.06 s | 0.03 s | 0.01 s |
+  | 10 000 | 88 024 | 0.62 s | 0.27 s | 0.14 s |
+  | 30 000 | 263 872 | 2.1 s | 1.0 s | 0.50 s |
 
-  Ten times the field takes about eight times as long in `run`, and three times about four.
-  The machine was busy while these were taken (a load average above 20), so read them as scale,
-  not as a record. `node --expose-gc ts/scripts/bench.ts` reproduces the table with a digest of
-  each answer, and the TypeScript and WebAssembly digests match. What stays open is the cost per
-  read: a live view of a mass field should fold once per batch of arrivals, not once per
-  observation.
+  Ten times the field takes about ten times as long in `run`, and three times about three and a
+  half. The machine was busy while these were taken (a load average above 30), so read them as
+  scale, not as a record. `node --expose-gc ts/scripts/bench.ts` reproduces the table with a
+  digest of each answer, and the TypeScript and WebAssembly digests match. What stays open is the
+  cost per read: a live view of a mass field should fold once per batch of arrivals, not once
+  per observation.
 - **Geometry.** Building a document from a line (`at_along`, `mats_along`, `laps_along`, and how
   `pace:measure` is computed) has tests but no normative corpus.
 - **Sports.** There is no dialect yet for ski, paddle or rowing.

@@ -38,9 +38,10 @@ import * as HashSet from 'effect/HashSet'
 import * as MutableHashSet from 'effect/MutableHashSet'
 import * as Order from 'effect/Order'
 import * as Schema from 'effect/Schema'
-import { decodeUnknownResult } from 'effect/SchemaParser'
+import { decodeResult, decodeUnknownResult } from 'effect/SchemaParser'
 
 import { Instant, ObservationKind, Place } from './kernel.ts'
+import { JsonText } from './text.ts'
 
 /**
  * Where an observation came from, and how much to believe it.
@@ -88,6 +89,9 @@ export type TObservation = typeof Observation.Type
 
 /** A log: a JSON array of observations, in any order (SPEC.md §2.3). */
 export const Log = Schema.Array(Observation)
+/** A log from **its text**: SPEC.md §4.2's `parse_log`, the laws of the text included. */
+export const parse_log = decodeResult(JsonText.pipe(Schema.decodeTo(Log)))
+/** A log from a value a JSON parser already made: the per-field rules, and not the text's. */
 export const decode_log = decodeUnknownResult(Log)
 export const encode_log = Schema.encodeSync(Log)
 

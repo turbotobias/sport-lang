@@ -16,7 +16,11 @@
  *   The schema must reject exactly the `rejects` cases, and must accept every
  *   `refuses` case: those break a cross-document law, which SPEC.md §2.1 says
  *   needs an engine, and a schema that rejected them would be claiming more
- *   than it can see.
+ *   than it can see. The laws of the text (§2) are further out of its sight
+ *   still: a validator is handed a value, and a value does not show that its
+ *   text named a member twice. So a case carried as text is validated as the
+ *   value `JSON.parse` makes of it, which the schema must accept whatever the
+ *   verdict on the text — the same blindness the engine's own value path has.
  *
  * @see scripts/make-schema.ts
  * @see SPEC.md §2.1
@@ -73,8 +77,11 @@ const DecodeCase = Schema.Struct({
     verdict: Verdict,
     log: Schema.optionalKey(Schema.Struct({ verdict: Verdict })),
   }),
-  document: Schema.Unknown,
+  document: Schema.optionalKey(Schema.Unknown),
+  /** The document as its text, for a law of the text (SPEC.md §2). */
+  document_text: Schema.optionalKey(Schema.String),
   log: Schema.optionalKey(Schema.Array(Schema.Unknown)),
+  log_text: Schema.optionalKey(Schema.String),
 })
 const ConformanceCase = Schema.Struct({
   name: Schema.String,
@@ -115,10 +122,18 @@ describe('the JSON Schema', () => {
   for (const file of decode_files) {
     const kase = read(DecodeCase, join(DECODE, file))
     it(`${kase.expect.verdict}: ${kase.name}`, () => {
-      const by_schema = valid_document(kase.document)
-      const by_engine = Result.isSuccess(decode_document(kase.document))
+      // A text case is every member in place and lawful: what is wrong with it
+      // is in the characters, which neither a schema nor a decoded value sees.
+      const as_text = kase.document_text !== undefined
+      const document: unknown = as_text ? JSON.parse(kase.document_text) : kase.document
+      const by_schema = valid_document(document)
+      const by_engine = Result.isSuccess(decode_document(document))
       // A `refuses` document decodes: only the engine's cross-document laws stop it.
-      assert.strictEqual(by_schema, kase.expect.verdict !== 'rejects', 'the schema’s verdict')
+      assert.strictEqual(
+        by_schema,
+        as_text || kase.expect.verdict !== 'rejects',
+        'the schema’s verdict',
+      )
       assert.strictEqual(by_schema, by_engine, 'the schema and the engine disagree about this file')
     })
   }
@@ -160,12 +175,19 @@ describe('the JSON Schema', () => {
       .map((file) => read(DecodeCase, join(DECODE, file)))
       .filter((kase) => kase.expect.log?.verdict === 'rejects')
     assert.isAtLeast(rejected.length, 4)
-    for (const kase of rejected)
+    const Rows = Schema.decodeUnknownSync(Schema.Array(Schema.Unknown))
+    for (const kase of rejected) {
+      // A log carried as text breaks a law of the text, which no validator is
+      // shown: the rows `JSON.parse` makes of it are every one an observation.
+      const as_text = kase.log_text !== undefined
+      const rows = as_text ? Rows(JSON.parse(kase.log_text)) : (kase.log ?? [])
+      assert.isNotEmpty(rows, kase.name)
       assert.strictEqual(
-        (kase.log ?? []).every(valid_observation),
-        ENGINE_ONLY.includes(kase.name),
+        rows.every(valid_observation),
+        as_text || ENGINE_ONLY.includes(kase.name),
         kase.name,
       )
+    }
   })
 
   it('reads one instant shape: UTC, `Z`, milliseconds optional', () => {

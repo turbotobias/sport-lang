@@ -54,13 +54,15 @@ everything else is explanation.
   reached it yet (§3.2).
 - **Standing.** Where an entrant's day ended up: `clean < penalised < gated <
   disqualified`. It only ever worsens. Withdrawing is not a standing.
-- **Law.** Something a document must satisfy. A *per-field* law is checked
-  while parsing; a *cross-document* law needs the whole document (§2.1).
-- **Rejected** / **refused.** A document that breaks a per-field law is
-  *rejected*: it is not a document. One that breaks a cross-document law, or
-  names a dialect or kind the reader does not ship, is *refused*: readable —
-  it still draws — but not runnable (§3.3). A log that does not decode, or
-  that uses an observation id twice, is *malformed* (§2.3).
+- **Law.** Something a document must satisfy. A law *of the text* is checked
+  on the file's characters, before any member is read (§2); a *per-field* law
+  is checked while parsing; a *cross-document* law needs the whole document
+  (§2.1).
+- **Rejected** / **refused.** A document that breaks a law of the text or a
+  per-field law is *rejected*: it is not a document. One that breaks a
+  cross-document law, or names a dialect or kind the reader does not ship, is
+  *refused*: readable — it still draws — but not runnable (§3.3). A log that
+  does not decode, or that uses an observation id twice, is *malformed* (§2.3).
 - **Fold.** The deterministic evaluation of a document's rules over a log
   (§3). **Entrant state**: what the fold says about one entrant.
 
@@ -77,7 +79,11 @@ or Python implementation cannot express, and deliberately so:
   classic way two implementations disagree on a result, and none of the
   arithmetic here needs it. Two places admit a fraction — a `field` atom's
   `ratio` and a measured `quantity` — and each is one IEEE 754 operation, not
-  a sum, so it rounds the same everywhere. Neither engine rejects a fractional
+  a sum, so it rounds the same everywhere. That starts at the file: a number
+  is the double nearest to what is written, a tie going to the even one,
+  however many digits it is written with. A reader that estimates instead can
+  be a step out from sixteen significant digits on, and a measurement at its
+  limit is then a different standing. Neither engine rejects a fractional
   `along_m` or `_ms` value; the corpus contains none, and a producer must not
   write one.
 - **No recursion.** A predicate is one combinator over a flat list of clauses.
@@ -97,6 +103,35 @@ observation, and the entrant state (§4.1). A JSON Schema of each is in
 generated from the reference. They carry the per-field laws they can express
 and none of the cross-document ones; an instant's pattern is in them, and
 whether its day is on the calendar (§2.3) is checked by the engines only.
+
+**The text.** A document and a log are each one JSON text (RFC 8259). JSON
+leaves two things to whoever parses it, and two lawful parsers given the same
+bytes then hold two different files. Neither is read here: an implementation
+must **reject** a text that does either, at parse time, before it reads a
+member. Both are among what I-JSON (RFC 7493) forbids.
+
+| law of the text | broken when |
+| --- | --- |
+| `a member is named twice` | an object names a member twice: at any depth, and whether this specification names the member or not. One parser keeps the last value, another the first, a strict one refuses, so `"pace-geojson": 1, "pace-geojson": 2` would be version 1 or version 2, and a cut-off one hour or two, by whichever the reader's parser kept |
+| `a string holds half a surrogate pair` | a string — a member's name or a value, read or not — has an escape `\uD800`–`\uDBFF` that is not followed at once by an escape `\uDC00`–`\uDFFF`, or the second without the first. Half a pair is not a character: a language whose strings are UTF-16 holds it and one whose strings are Unicode cannot, so an id carrying one is an entrant to the first and a malformed log to the second |
+
+Names are compared after their escapes are resolved, character for character:
+`"pace:way"` and `"pace:\u0077ay"` are one name, as they are to every parser.
+Nothing else is normalised — an accent written as one code point and as two
+are two names, and so are `"a"` and `"A"`. A surrogate pair written as two
+escapes (`"\ud83d\ude00"`) is one character and lawful, and so is an escaped
+backslash followed by the same letters (`"\\ud83d"`).
+
+**Only the text can show the first.** Once a parser has answered there is one
+value for each name and no trace that there were two, so no check on a value
+can find it — which is also why the JSON Schemas, which describe a value,
+carry neither law. An implementation therefore checks both on the characters
+it is given: `parse_document` and `parse_log` take the file's text (§4.2),
+and both engines read it once for exactly these two laws without consulting
+their JSON parsers, so the verdict on a text is not either parser's to give.
+A host that parses the file itself and hands an engine the value has already
+let its parser choose. It hands over the text instead, or parses with a
+parser that refuses a repeated name.
 
 ### 2.1 The course document
 
@@ -141,7 +176,8 @@ Ids are opaque strings. The prefixes in the examples (`crs_`, `evt_`, `rul_`,
 `obs_`, `ent_`) are a convention nobody checks. A nullable member is written as
 `null`, not omitted. Members this specification does not name — GeoJSON's
 `bbox`, a feature's top-level `id`, a vendor's own — are ignored by every
-reader, as GeoJSON's foreign members are.
+reader, as GeoJSON's foreign members are; ignored, and still not to be named
+twice (§2, the text).
 
 **`pace:path`** is an ordered list of slices, each `{ line, from_m, to_m,
 repeat }`: run the line named `line` from `from_m` to `to_m`, `repeat` times.
@@ -159,8 +195,9 @@ its kernel form: the file says *drafting, 25 seconds* and the meaning of
 drafting is corrected in one place, the dialect.
 
 **Laws beyond GeoJSON.** An implementation must **reject** a document that
-breaks one of the first group at *parse* time, and must **refuse to run** —
-while still being able to **draw** — a document that breaks one of the second.
+breaks one of the first group at *parse* time, as it rejects one whose text
+breaks a law of the text (§2), and must **refuse to run** — while still being
+able to **draw** — a document that breaks one of the second.
 
 | checked per field | |
 | --- | --- |
@@ -329,7 +366,8 @@ The only input. Produced by the bridge (§4), never by the language.
 | `source`, `device`, `confidence` | provenance. The fold never reads them |
 
 Every member is present; a nullable one is written as `null`. A log is a JSON
-array of observations, in any order.
+array of observations, in any order, and its text keeps the laws of the text
+(§2) as a document's does.
 
 **An instant** is exactly one of the two shapes above, and it must be on the
 calendar: a month from 01 to 12, a day that month has (29 February only in a
@@ -687,9 +725,9 @@ The rest of `ts/src/` is equally outside the conformance surface: `build.ts`
 makes a document from a course line, `simulate.ts` makes a seeded ghost field's
 log, `replay.ts` answers "where was everybody at *t*", and `pacing.ts` answers
 "what even pace clears every cut-off?" by folding a one-entrant log, which
-reads no climb. What is normative is `ids.ts`, `document.ts`, `kernel.ts`,
-`pack.ts`, `packs/`, `observe.ts`, `fold.ts` and `run.ts`, which is what
-`rust/src/` implements.
+reads no climb. What is normative is `ids.ts`, `text.ts`, `document.ts`,
+`kernel.ts`, `pack.ts`, `packs/`, `observe.ts`, `fold.ts` and `run.ts`, which
+is what `rust/src/` implements.
 
 ### 4.1 The entrant state
 
@@ -738,13 +776,17 @@ Language-neutral, as total functions. Nothing else is required, and nothing
 here performs IO.
 
 ```
-parse_document(bytes)             -> Document | ParseError          the per-field laws
+parse_document(bytes)             -> Document | ParseError          the laws of the text, then the per-field laws
 laws(document)                    -> [BrokenLaw]                    the laws that need only the document
 plan(document, dialects)          -> [KernelRule] | NotRunnable     §3.3, and the producer law
-parse_log(bytes)                  -> [Observation] | ParseError     §2.3's per-field rules
+parse_log(bytes)                  -> [Observation] | ParseError     the laws of the text, then §2.3's per-field rules
 log_laws([Observation])           -> [BrokenLaw]                    §2.3's log law
 fold([KernelRule], [Observation]) -> [EntrantState]                 §3, encoded as §4.1
 ```
+
+The two parsers take **bytes**: the file as it was written, not a value some
+other parser made of it. The laws of the text (§2) can be checked nowhere
+else.
 
 A host that has the two files and wants the answer composes them as one call,
 `run(dialects, document, log)`, which both engines provide and which answers
@@ -760,7 +802,15 @@ Checked in this order: the document parses, the log parses, the document
 plans, the log keeps its law. So an unparsable document or log is malformed
 whatever else is true, and a document that does not plan is refused even
 when its log repeats an id. Everything but the `why` of a malformed answer is
-the same, member for member, in both engines.
+the same, member for member, in both engines; for a law of the text both
+`why`s begin with the law's sentence (§2).
+
+`run` takes the two files as text, like the parsers it is made of. The
+reference's also takes, for either, a value a JSON parser has already made —
+a host in JavaScript may hold nothing else — and then answers for everything
+a value can still show: every law but the text's. The Rust has the same
+shorter road, a derived `Deserialize`, with the same blindness. Neither is
+`parse_document`.
 
 ## 5. Conforming
 
@@ -798,12 +848,17 @@ reached by at least one of them — `controls` both in order and in any order �
 which both engines' runners check. The cut-off edge pair is one document
 twice: a runner at exactly the limit is clean, one a second per kilometre
 slower is gated, and an implementation that rounds anywhere gets one of them
-wrong. The decode corpus is **43 cases: 10 accept, 16 reject, 17 refuse**,
+wrong. The decode corpus is **54 cases: 14 accept, 23 reject, 17 refuse**,
 written by `ts/scripts/make-decode-corpus.ts` as one base document and one
-mutation each. Six of the ten accepted documents carry a log with a verdict of
-its own: one accepted (an instant with and without milliseconds), four
-rejected (an offset, a time that is not one, a day that does not exist, a
-missing member) and one refused (an id used twice). The seven synthetic
+mutation each. Eight of the fourteen accepted documents carry a log with a
+verdict of its own: one accepted (an instant with and without milliseconds),
+six rejected (an offset, a time that is not one, a day that does not exist, a
+missing member, a member named twice, half a surrogate pair) and one refused
+(an id used twice). Eleven of the cases carry a **text** where the others carry
+a value — nine a document's, two a log's. Ten do because the law each tests is
+one of the text's (§2), and a JSON value cannot break it; one because it is
+about a number written with more digits than a double holds (§1), which a
+JSON writer would write shorter. The seven synthetic
 courses (`half-flat`, `half-hilly`, `marathon`, `trail-50k`, `ride-500k`,
 `loop-6720`, `road-44k`) are written by `ts/scripts/make-courses.ts`; they sit
 within a couple of degrees of 0° N 0° E, in open sea, so nobody mistakes one
@@ -828,9 +883,16 @@ generated?, document, log, expect }`:
    `standing`, `total_ms` and `adjustment_ms` exactly, `awards` in order, and
    `laps`.
 
-For every `corpus/decode/*.json` — `{ name, why, document, log?, expect: {
-verdict, laws?, missing_dialects?, refused?, unknown_version?, log? } }`:
+For every `corpus/decode/*.json` — `{ name, why, document | document_text,
+log? | log_text?, expect: { verdict, laws?, missing_dialects?, refused?,
+unknown_version?, log? } }`:
 
+- A case carries its document as `document`, a JSON value, or as
+  `document_text`, a string that is the file's text. Parse a text exactly as
+  it is written, without passing it through another JSON reader first: what
+  it tests would not survive one. A value may be written out by any JSON
+  writer and parsed, and must get the same verdict. A log is carried the same
+  two ways, as `log` or as `log_text`.
 - `accepts`: the document parses and plans.
 - `rejects`: the document does not parse.
 - `refuses`: it parses and does not plan, and the refusal matches — `laws` as
@@ -859,7 +921,7 @@ case that pins it.
 
 `rust/` implements §2–§3 from this document and the corpus rather than from
 the TypeScript. It passes all 19 conformance cases — **104 entrant
-states** — and all 43 decode cases, and separately pins the
+states** — and all 54 decode cases, and separately pins the
 properties §3 states rather than inheriting them: scrubbing to the end equals
 the race, a standing only worsens as time runs, the log's arrival order cannot
 change the result, a correction supersedes, an unknown dialect is refused by
@@ -883,11 +945,49 @@ accept exactly §2.3's instants and nothing else.
 
 Where the two engines once read a file differently — an omitted member read
 as null, a `type` not checked, an offset read as UTC, a date that does not
-exist read as 1970 — each is now a decode case, and the sweep in §5b damages a
-lawful file every way it can to look for the next one. One known difference
-remains, outside anything the corpus pins: the Rust orders ids by UTF-8
-bytes, the reference by UTF-16 code units. These agree unless an id holds a
-character between U+E000 and U+FFFF; every id in the corpus is ASCII.
+exist read as 1970, a member named twice kept by one and refused by the
+other, half a surrogate pair held by one and not the other — each is now a
+decode case, and the sweeps in §5b damage a lawful file every way they can to
+look for the next one.
+
+A decimal with more digits than a double holds was one more. The Rust's
+parser read a neighbour of the nearest double from sixteen significant digits
+on, so `730.65172614218456` was two numbers a step apart: a penalty written
+back differently and, for water written a hair over a legal temperature, two
+standings. The largest double, written with one digit more than it has, was a
+file to one engine and malformed to the other. Both read the nearest double
+now (§1). The verdict is a decode case,
+`accepts-the-largest-double-written-long`; a number a step apart cannot be
+one, because a case carries a value and a value has lost how its number was
+written, so those are a sweep: the fourth in §5b.
+
+**What they still read differently**, all of it outside anything the corpus
+pins, and none of it in a file a producer writes. Each is held in
+`ts/test/differential.test.ts`, with the nearest file on which the engines
+agree beside it, so this list fails a test the day it stops being true:
+
+- **The order of two ids.** The Rust orders ids by UTF-8 bytes, the reference
+  by UTF-16 code units. These agree unless one id holds a character from
+  U+E000 to U+FFFF and the other a character past U+FFFF; every id in the
+  corpus is ASCII.
+- **A number no double holds** (`1e999`, and anything from half a step past
+  the largest double on). Read as a member of the document or of an
+  observation, both reject it; in a member nothing reads, both step over it.
+  They part inside the four members the Rust keeps as generic JSON until
+  it knows what they are — a rule's `at` and `params`, a feature's `geometry`
+  and `properties` — where its parser must read the number to keep it and
+  cannot. There the Rust answers malformed; the reference ignores it in a
+  foreign member, and as a dialect's parameter refuses the rule with
+  `parameters do not fit`.
+- **Nesting 128 deep.** The Rust's JSON parser stops at 128 arrays and objects
+  inside one another, and reaches that depth only in the same four members;
+  the reference has no limit. A foreign member nested that deep in one of
+  them is malformed to the Rust and ignored by the reference. A document's
+  own members nest seven deep.
+- **A whole number past 2⁵³ − 1.** Both fold the same double; the reference
+  writes it out in digits and the Rust as a float (`9007199254740994.0`), and
+  a duration that long is said differently in a sentence. 2⁵³ milliseconds is
+  285 000 years.
 
 ### 5b. Both engines, on fields nobody wrote down
 
@@ -916,6 +1016,26 @@ one that is not a time, a day that does not exist, one without milliseconds,
 and an id used twice. Both engines must give the same answer to each — the
 same kind, and for a refusal the same reasons, for a malformed log the same
 broken laws. Of the 176, 171 are malformed, 4 refused and 1 runs.
+
+A third is about the text (§2), which the second cannot reach: it is built
+from values, and no JSON writer will write a value's member twice. So the same
+document and log are written out by hand, with each of their 171 members
+named twice — once plainly, once with the second name spelled under an escape
+— and with each of the 77 strings a member holds cut to half a surrogate
+pair. **419 texts, every one malformed in both engines, for the same law.**
+And the other way about: the lawful text spaced out, or with every name
+spelled under an escape, is the same file to both and runs to the same answer.
+
+A fourth is about a number written with more digits than a double holds (§1),
+which no generated field contains: a writer gives a double its shortest form.
+1 800 decimals of thirteen to twenty-one significant digits go through a
+rule's parameter and come back in the answer. 400 water temperatures are
+written between a legal limit and the next double above it, where the nearer
+of the two decides a disqualification. And the largest double is written
+long. **2 200 numbers, every answer the same in both engines, to the byte.**
+
+Every sweep hands both engines the same two strings, so what is compared is
+each engine's reading of a file, its JSON parser included.
 
 ```
 wasm-pack build wasm --target nodejs --out-dir pkg-node --release   # the Rust core, for Node

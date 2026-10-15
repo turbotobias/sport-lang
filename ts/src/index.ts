@@ -14,13 +14,15 @@
  *
  * Read `kernel.ts` for what a rule can say, `pack.ts` for how a sport gets a
  * vocabulary without changing that, `observe.ts` for why timing is outside the
- * language, `fold.ts` for the evaluation order, and `document.ts` for the file
- * that carries all of it. Every module is also importable on its own —
+ * language, `fold.ts` for the evaluation order, `document.ts` for the file
+ * that carries all of it, and `text.ts` for the two things a file may not do
+ * before any member of it is read. Every module is also importable on its own —
  * `pace-geojson/document`, `pace-geojson/fold`, `pace-geojson/packs/athletics`.
  *
  * @see SPEC.md §4 — the four calls a host provides: parse, laws, plan, fold
  */
 export * from './ids.ts'
+export * from './text.ts'
 export * from './kernel.ts'
 export * from './observe.ts'
 export * from './pack.ts'
@@ -32,6 +34,8 @@ export * from './replay.ts'
 export * from './simulate.ts'
 export * from './pacing.ts'
 export * from './run.ts'
+export * from './geodesic.ts'
+export * from './summary.ts'
 
 import type { TPack } from './pack.ts'
 import { athletics } from './packs/athletics.ts'

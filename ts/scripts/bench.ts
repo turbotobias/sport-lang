@@ -16,8 +16,9 @@
  * no size inherits the heap of the one before, and is timed four ways; every
  * timing starts from the JSON a host would receive:
  *
- * - **ts run**: `run(PACKS, document, log)` over the parsed JSON — decode
- *   both, plan, check the log, fold, encode every state (SPEC.md §4).
+ * - **ts run**: `run(PACKS, document_json, log_json)` over the two texts —
+ *   parse both, the laws of the text included, plan, check the log, fold,
+ *   encode every state (SPEC.md §4).
  * - **wasm run**: `run(document_json, log_json)` from `wasm/pkg-node`, answer
  *   parsed: the same work in the Rust engine, in the same shape. Skipped when the core has not been built (`wasm-pack build wasm
  *   --target nodejs --out-dir pkg-node --release`).
@@ -201,7 +202,7 @@ const measure = (entrants: number) => {
   const log_json = JSON.stringify(encode_log(log))
 
   const ts = time(() => {
-    const answer = run(PACKS, JSON.parse(document_json), JSON.parse(log_json))
+    const answer = run(PACKS, document_json, log_json)
     return answer.kind === 'ran' ? answer.states : answer
   })
   const wasm =

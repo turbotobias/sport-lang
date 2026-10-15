@@ -341,6 +341,18 @@ pub struct CourseDocument {
     pub features: Vec<Feature>,
 }
 
+/// A document from **its text**: `SPEC.md` §4.2's `parse_document`.
+///
+/// The whole of what makes a file a document: it is JSON, it keeps the laws of
+/// the text ([`crate::text`] — no member named twice, no half of a surrogate
+/// pair), and its members keep the per-field laws. This is the call for a
+/// file. `serde_json::from_str::<CourseDocument>` alone is the per-field laws
+/// and **not** the text's: it refuses a repeated member only where it has a
+/// field of that name, and keeps the last everywhere else.
+pub fn parse_document(text: &str) -> Result<CourseDocument, String> {
+    crate::text::read(text)
+}
+
 /// A named place on the course, with its address.
 pub struct NamedPlace<'a> {
     pub id: &'a str,

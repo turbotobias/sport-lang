@@ -9,7 +9,7 @@
 
 <p align="center">
   <img alt="format v1, unreleased" src="https://img.shields.io/badge/format-v1%20(unreleased)-e8590c">
-  <img alt="62 public test cases, two engines agree on all" src="https://img.shields.io/badge/62%20test%20cases-two%20engines%20agree-1a7f37">
+  <img alt="73 public test cases, two engines agree on all" src="https://img.shields.io/badge/73%20test%20cases-two%20engines%20agree-1a7f37">
   <img alt="Apache-2.0" src="https://img.shields.io/badge/licence-Apache--2.0-59636e">
 </p>
 
@@ -115,7 +115,7 @@ Nothing is on crates.io or npm yet (0.1.0 is unreleased): clone `https://github.
 - [TypeScript](docs/api.md#typescript-quick-start) — `npm ci` in `ts/`, then `node ts/examples/quickstart.ts`
 - [WebAssembly](docs/api.md#webassembly) — the Rust engine in a browser or Node
 - [The specification](SPEC.md) — every law, every signature
-- [The corpus](corpus/) — 19 conformance cases and 43 decode cases both engines must pass; the corpus *is* the spec
+- [The corpus](corpus/) — 19 conformance cases and 54 decode cases both engines must pass; the corpus *is* the spec
 
 ## Go deeper
 

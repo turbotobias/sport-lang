@@ -22,6 +22,15 @@ aliased (`"racejson": 1` with `race:*`, or `sport:version` with `sport:*`).
   `unstated` when nobody said), and the rules (`pace:rules`). The wire namespace is `pace:`;
   see `SPEC.md`. `pace-geojson` is an integer ≥ 1, and a document of a version an engine does
   not run draws and is refused by name (`unknown_version`), never run as version 1.
+- **The text, with two laws.** A document and a log are each a JSON text, and a text is not one
+  if an object in it names a member twice (`a member is named twice`) or a string in it holds
+  half a surrogate pair (`a string holds half a surrogate pair`): at any depth, in a member the
+  format names or one it does not. JSON leaves both to the parser — one keeps the last of two
+  members, another the first; one holds half a pair, another cannot — so the same bytes were a
+  version-1 document to one reader and something else to the next. Both engines read the text
+  once for exactly these, without asking their JSON parsers, and `parse_document`, `parse_log`
+  and `run` take the file's text. A value a host parsed for itself can no longer show the first,
+  so the TypeScript `run` and `decode_document` still take one and say what they cannot check.
 - **The observation log, with one law.** Every member of an observation is present. An instant
   is exactly `YYYY-MM-DDTHH:MM:SSZ` or `…SS.sssZ`, on a day the calendar has, with no leap
   second; an offset is refused rather than converted. An observation id is unique within a log
@@ -97,14 +106,27 @@ aliased (`"racejson": 1` with `race:*`, or `sport:version` with `sport:*`).
   (document + observation log + expected result per entrant) and reaching every kind of every
   dialect, including a pair locking the cut-off edge — an entrant at exactly the clearing pace
   finishes, one a second per kilometre slower is gated — a qualifying time on a lapped course,
-  and the README's own race. 43 decode cases (10 accept, 16 reject, 17 refuse; six of them also
-  judge a log) pin what a reader must accept, reject or refuse, and why. 7 synthetic courses,
+  and the README's own race. 54 decode cases (14 accept, 23 reject, 17 refuse; eight of them
+  also judge a log, and eleven carry a file as text: ten for the laws only a text can break, one
+  for a number only a text can write long) pin what a
+  reader must accept, reject or refuse, and why. 7 synthetic courses,
   from a flat half marathon to a 500 km ride and a 6 720 m backyard loop, feed the generators in
   `ts/scripts/`.
-- **Two differential sweeps** through both engines. One folds generated fields — with officials'
-  flags and a measured water temperature — and compares the whole answer: 44 fields,
-  1 100 entrant states, 0 disagreements. The other damages a lawful document and log 176 ways
-  and compares the verdicts: 0 disagreements.
+- **A number is the nearest double.** Both engines read a number as the double nearest to what
+  is written, however many digits that is (`SPEC.md §1`); the Rust crate takes `serde_json` with
+  `float_roundtrip` to do it. Read the quicker way, a decimal of sixteen digits or more can come
+  out a step from the nearest double — a penalty written back differently, a measurement at its
+  limit given another standing — and the largest double, written long, is refused.
+- **Four differential sweeps** through both engines, each handing both the same two strings.
+  One folds generated fields — with officials' flags and a measured water temperature — and
+  compares the whole answer: 44 fields, 1 100 entrant states, 0 disagreements. One damages a
+  lawful document and log 176 ways and compares the verdicts: 0 disagreements. One writes the
+  same two files out with every member named twice and every string cut to half a surrogate
+  pair, 419 texts: every one malformed in both, for the same law. One writes numbers with more
+  digits than a double holds — 1 800 decimals through a rule's parameter, 400 water
+  temperatures across a legal limit — and compares the whole answer: 0 disagreements. Beside
+  them, the four places the engines still read a file differently are each held by a test
+  (`SPEC.md §5a`).
 - **JSON Schemas** of the document, the observation and the entrant state in `schema/`,
   generated from the TypeScript schema, for tools that validate without running either engine.
 - **A reference bridge** (`ts/src/bridge.ts`): raw reads from mats and devices, time-bounded tag
@@ -125,6 +147,18 @@ aliased (`"racejson": 1` with `race:*`, or `sport:version` with `sport:*`).
   writers say the same ground the same way; a document that carries any covers its whole path. The
   builder's `document_of` takes `segments` and draws each as the slice of the line between its path
   distances, across laps. Segment kinds stay descriptive: nothing folds or plans them.
+- **A course at a glance** (`ts/src/summary.ts`): `summary_of` reads a document and nothing else —
+  its length (`path_length`), its stated distance, climb and descent as `pace:measure` says them,
+  its heights at even steps from start to finish, its ground from the `surface:` segments (when they
+  cover the course; `:inferred` dropped, a material outside the family `unknown`) and its places in
+  order — so every app that shows a course in miniature gives the same answer from the same file.
+  Each vertex's distance is measured from the geometry on the WGS84 ellipsoid (`ts/src/geodesic.ts`:
+  `geodesic_m`, Vincenty's inverse; `alongs_m`, a line's steps on the ellipsoid's local radii,
+  within a millimetre a kilometre of it) and laid on the document's own metres. It invents nothing:
+  no climb the measure does not state, no heights on a line that does not carry them all, no ground
+  where the cover is broken. In both engines (`CourseDocument::summary` in Rust), held to one
+  answer by `corpus/summary/`: eight cases generated by `ts/scripts/make-summaries.ts`, whose 380
+  heights the two engines give to the bit.
 - **A worked example** (`examples/10k/`): a 10 km with four rules and five runners that end in all
   four standings, folded by both engines in CI, and quick starts in Rust
   (`rust/examples/quickstart.rs`), TypeScript (`ts/examples/quickstart.ts`) and WebAssembly

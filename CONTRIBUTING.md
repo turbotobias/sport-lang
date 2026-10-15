@@ -34,7 +34,9 @@ So the rule for every change to what a document means is the same:
   zero disagreements. A wire change is a spec change in both engines, never one.
 - **A new parse or law verdict lands with a decode case** in `corpus/decode/`: `accept`, `reject`
   (the document is malformed) or `refuse` (it draws but will not run), with the reason. A verdict
-  on a log rides on a case whose document is accepted, as its `log` and `expect.log`.
+  on a log rides on a case whose document is accepted, as its `log` and `expect.log`. A law of
+  the text cannot be written as a JSON value, so its case carries the file as a string,
+  `document_text` or `log_text`.
 - **Rules are append-only within a major version.** A rule written under `athletics@1` in 2027
   must mean the same thing in 2031. Changing what an existing kind does is a new major version
   of its dialect (`athletics@2`), shipped beside the old one.

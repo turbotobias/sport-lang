@@ -11,6 +11,9 @@ description = "The rules of an endurance event, as one file any software can run
 readme = "../README.md"
 keywords = ["timing", "race", "wasm", "sport", "rules"]
 categories = ["wasm", "parser-implementations"]
+# Not a registry crate: it is built by whoever needs the binding, with
+# wasm-pack, from this repository. `pace-geojson` is the crate that is published.
+publish = false
 
 [lib]
 crate-type = ["cdylib", "rlib"]
@@ -23,6 +26,6 @@ wasm-bindgen = "0.2"
 
 [package.metadata.wasm-pack.profile.release]
 # The `wasm-opt` wasm-pack ships is older than the reference-types this
-# toolchain emits and refuses the module outright. The binary is about 410 KB
+# toolchain emits and refuses the module outright. The binary is about 480 KB
 # unoptimised, so skipping it costs little until a newer wasm-opt is bundled.
 wasm-opt = false

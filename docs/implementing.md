@@ -10,10 +10,10 @@ A host provides these total functions, and none of them performs IO
 ([SPEC §4](../SPEC.md#4-the-boundary)):
 
 ```
-parse_document(bytes)             -> Document | ParseError       per-field laws
+parse_document(bytes)             -> Document | ParseError       laws of the text, per-field laws
 laws(document)                    -> [BrokenLaw]                 cross-document laws
 plan(document, dialects)          -> [KernelRule] | NotRunnable  expand kinds; refuse, never skip
-parse_log(bytes)                  -> [Observation] | ParseError  per-field laws
+parse_log(bytes)                  -> [Observation] | ParseError  laws of the text, per-field laws
 log_laws([Observation])           -> [BrokenLaw]                 an id used twice
 fold([KernelRule], [Observation]) -> [EntrantState]              settle, absorb, strata
 ```
@@ -25,8 +25,9 @@ you understood", and no running a version-2 document as version 1.
 
 ## What is rejected, refused or malformed
 
-A document is **rejected at parse** if a member is missing or has the wrong type, or if it breaks
-a per-field law of [SPEC §2.1](../SPEC.md#21-the-course-document): a longitude outside ±180 or a
+A document is **rejected at parse** if its text breaks a law of the text (below), if a member is
+missing or has the wrong type, or if it breaks a per-field law of
+[SPEC §2.1](../SPEC.md#21-the-course-document): a longitude outside ±180 or a
 latitude outside ±90; a `LineString` of fewer than 2 positions; a negative `along_m`, `from_m` or
 `to_m` on a point, segment or path slice; `repeat` < 1; a `pace-geojson` that is not an integer
 ≥ 1; or a role with the wrong geometry ([§2.2](../SPEC.md#22-features)). It is **readable but not
@@ -43,27 +44,54 @@ place is bound to none; or if it breaks one of the 8 cross-document laws:
 - no line at all;
 - a rule requiring an observation its place never produces.
 
-A log is **malformed** if an observation does not decode or an id is used twice.
+A log is **malformed** if its text breaks a law of the text, an observation does not decode, or an
+id is used twice.
+
+### The text, before the members
+
+Two laws are about the file's characters ([SPEC §2](../SPEC.md#2-the-data)), and they are the two
+your JSON library most likely decides for you without saying:
+
+- **No object names a member twice**, at any depth, whether you read the member or not. Most
+  parsers keep the last of two; some keep the first. Either way your engine would be running a
+  file another engine reads differently, so it must be refused. Names are compared after their
+  escapes are resolved (`"pace:way"` and `"pace:\u0077ay"` are one name) and not normalised
+  further.
+- **No string holds half a surrogate pair** (`"\ud83d"` with no low half after it), in a name or
+  a value. A language whose strings are UTF-16 will hold it; one whose strings are Unicode will
+  not.
+
+Check both on the text, before or beside your parser. Many JSON libraries can be made to refuse
+or report a repeated name (Jackson's `STRICT_DUPLICATE_DETECTION`, a pairs hook in Python's
+`json`); failing that, the short scan both engines here use does it — one pass over the
+characters, tracking which string is a name (`ts/src/text.ts`, `rust/src/text.rs`). **A value
+your parser has already made cannot show the first**, so `parse_document` and `parse_log` take
+bytes, and ten decode cases carry their file as a string (`document_text`, `log_text`) for you to
+parse exactly as written. An eleventh does for a number: `accepts-the-largest-double-written-long`
+(below, under Arithmetic).
 
 ## The order to pass the corpora
 
-1. [corpus/decode/](../corpus/decode): parse and laws. 43 cases, each a verdict (accept, reject,
+1. [corpus/decode/](../corpus/decode): parse and laws. 54 cases, each a verdict (accept, reject,
    refuse) and, for a refusal, the laws broken, the missing dialects, each refused rule with its
    reason, and a version the engine does not run.
 2. [corpus/conformance/](../corpus/conformance): plan and fold. 19 cases, 104 entrant states; every
    kind of every dialect is reached.
-3. Fold simulated fields beside the WebAssembly `run` ([api.md](api.md#webassembly)) and compare
+3. [corpus/summary/](../corpus/summary): a course at a glance. 8 cases; not part of running a race,
+   and what every reader that draws a course in miniature should agree on.
+4. Fold simulated fields beside the WebAssembly `run` ([api.md](api.md#webassembly)) and compare
    the whole answer. Every disagreement is either a bug or an ambiguity in the spec, and both
    become a case.
 
-The Rust engine is about 2 300 lines, comments included, and that is the size to expect.
+The Rust engine is about 2 700 lines, comments included, and that is the size to expect.
 
 ## The corpora
 
 | corpus | holds | asserts |
 | --- | --- | --- |
 | [corpus/conformance/](../corpus/conformance) | 19 cases, 104 entrant states: 11 written by hand ([one event, end to end](one-event.md) among them), 8 generated on synthetic courses. Every kind of every dialect is reached, `controls` in both orders, and both runners fail if one is not | `{name, why, document, log, expect[]}`. Every entrant's `standing, total_ms, adjustment_ms, awards, laps` must match, with no extra entrants and none missing |
-| [corpus/decode/](../corpus/decode) | 43 cases: 10 accept, 16 reject, 17 refuse. Six of the accepted documents carry a log with its own verdict: 1 accepted, 4 rejected, 1 refused | the verdict, and for a refusal the laws broken, the missing dialects, each refused rule with its reason, and a version the engine does not run |
+| [corpus/decode/](../corpus/decode) | 54 cases: 14 accept, 23 reject, 17 refuse. Eight of the accepted documents carry a log with its own verdict: 1 accepted, 6 rejected, 1 refused. Eleven carry a file as its text (`document_text` or `log_text`) where the rest carry a value | the verdict, and for a refusal the laws broken, the missing dialects, each refused rule with its reason, and a version the engine does not run |
+| [corpus/summary/](../corpus/summary) | 8 cases on the synthetic courses, each varying one thing a reader of a course gets wrong: laps, no heights, ground that covers the course and ground that does not, a material outside the family, a long ride, another number of steps | `{name, why, steps, document, expect}`. The length, the measure, the ground and the places must match exactly, and every height to the tenth of a metre it is written to (in rows of eight) |
 | [corpus/courses/](../corpus/courses) | 7 synthetic courses: half marathon flat and hilly, marathon, 50 km trail, 500 km ride, a 6 720 m loop, 44 km road | the inputs to the generators in [ts/scripts/](../ts/scripts). They sit in open sea within two degrees of 0° N 0° E, so they are obviously synthetic and freely licensable |
 
 Each case's `why` says what it pins. For example: _"one withdraws at 25 km and stays clean —
@@ -109,6 +137,16 @@ checked as whole numbers. Nothing in a decision divides or accumulates a fractio
 carry them as numbers (TypeScript) and `f64` (Rust), both exact for every integer below 2⁵³.
 Instants are UTC; local time is resolved before the document is written.
 
+- **A fraction is the nearest double.** A measured `quantity` and a dialect's parameter may be
+  written with more digits than a double holds, and the number they mean is the double nearest
+  to what is written, a tie going to the even one
+  ([SPEC §1](../SPEC.md#1-what-is-portable-and-what-is-not)). Not every JSON parser reads one
+  that way unless asked: Rust's `serde_json` needs its `float_roundtrip` feature, and without it
+  reads `22.500000000000002` as 22.5, which is clean under a `wetsuit_limit` of 22.5 where the
+  nearest double, 22.500000000000004, is disqualified. One decode case holds the far end of it,
+  `accepts-the-largest-double-written-long`: `1.7976931348623158e308` is the largest double, not
+  an error. No case holds a number a step out ([known-gaps.md](known-gaps.md)), so check that
+  yourself: `730.65172614218456` is 730.6517261421845.
 - `long-day-millisecond-arithmetic` pins a 497 km ride under a 24-hour cut-off, whose slowest
   finisher is out for more than 23 hours.
 - The cut-off-edge pair pins the boundary. At exactly 7:30/km, a 44 km runner arrives at

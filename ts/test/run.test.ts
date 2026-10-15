@@ -154,6 +154,95 @@ describe('run', () => {
   })
 })
 
+describe('run, handed the text', () => {
+  const document_text = readFileSync(join(ROOT, 'examples/10k/document.json'), 'utf8')
+  const log_text = readFileSync(join(ROOT, 'examples/10k/log.json'), 'utf8')
+  const Malformed = Schema.Struct({
+    kind: Schema.Literal('malformed'),
+    why: Schema.String,
+    broken: Schema.Array(Schema.Unknown),
+  })
+  const malformed = (d: unknown, l: unknown) => Schema.decodeUnknownSync(Malformed)(answer(d, l))
+
+  it('answers as it does for the values, either file as text or as a value', () => {
+    const want = answer(document, log)
+    assert.deepStrictEqual(answer(document_text, log_text), want)
+    assert.deepStrictEqual(answer(document_text, log), want)
+    assert.deepStrictEqual(answer(document, log_text), want)
+  })
+
+  it('refuses a document that names a member twice, whichever value it would have kept', () => {
+    // 1 then 1, 1 then 2, 2 then 1: a parser keeping the last runs the first
+    // and the third and refuses the second; one keeping the first runs the
+    // first two. All three are the same thing: not a document.
+    for (const versions of [
+      '1, "pace-geojson": 1',
+      '1, "pace-geojson": 2',
+      '2, "pace-geojson": 1',
+    ]) {
+      const twice = document_text.replace('"pace-geojson": 1', `"pace-geojson": ${versions}`)
+      assert.notStrictEqual(twice, document_text)
+      assert.deepStrictEqual(malformed(twice, log_text), {
+        kind: 'malformed',
+        why: 'the document did not decode: a member is named twice: "pace-geojson", line 3',
+        broken: [],
+      })
+    }
+  })
+
+  it('refuses it in a member nothing reads, and in a rule’s parameters', () => {
+    const foreign = document_text.replace('{', '{"x:note": 1, "x:note": 2,')
+    assert.include(malformed(foreign, log_text).why, 'a member is named twice: "x:note"')
+    const param = document_text.replace(
+      '"penalty_ms": 120000',
+      '"penalty_ms": 120000, "penalty_ms": 1',
+    )
+    assert.notStrictEqual(param, document_text)
+    assert.include(malformed(param, log_text).why, 'a member is named twice: "penalty_ms"')
+  })
+
+  it('refuses a log that does, and says it is the log', () => {
+    const twice = log_text.replace(
+      '"entrant": "ent_ana"',
+      '"entrant": "ent_ana", "entrant": "ent_ben"',
+    )
+    assert.notStrictEqual(twice, log_text)
+    assert.deepStrictEqual(malformed(document_text, twice), {
+      kind: 'malformed',
+      why: 'the log did not decode: a member is named twice: "entrant", line 4',
+      broken: [],
+    })
+  })
+
+  it('refuses half a surrogate pair in an id', () => {
+    const half = log_text.replace('"ent_ana"', String.raw`"ent_\ud83d"`)
+    assert.include(malformed(document_text, half).why, 'a string holds half a surrogate pair')
+  })
+
+  it('cannot see any of it once a parser has chosen: the value runs', () => {
+    // Why the text is what a host hands over. `JSON.parse` keeps the last of
+    // two members and says nothing, so the value is a lawful version-1
+    // document — and nothing about it can show that its text was not.
+    const twice = document_text.replace('"pace-geojson": 1', '"pace-geojson": 2, "pace-geojson": 1')
+    assert.strictEqual(malformed(twice, log_text).kind, 'malformed')
+    assert.deepStrictEqual(answer(JSON.parse(twice), log), answer(document, log))
+  })
+
+  it('takes a string as text and nothing else', () => {
+    // A document is never a string, so a string is never a value: a text
+    // written out twice over is the text of a string, and that is no document.
+    assert.strictEqual(malformed(JSON.stringify(document_text), log_text).kind, 'malformed')
+    assert.strictEqual(
+      malformed('', log_text).why,
+      'the document did not decode: Expected a JSON text',
+    )
+    assert.strictEqual(
+      malformed(document_text, '[').why,
+      'the log did not decode: Expected a JSON text',
+    )
+  })
+})
+
 describe('broken_log_laws', () => {
   it('names each id used twice once, however often it repeats', () => {
     const decoded = decode_log(log)

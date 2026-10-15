@@ -5,17 +5,17 @@
 //! - **ran** — every entrant's state, as [`EncodedState`].
 //! - **refused** — the document draws and does not run, and `why` says which
 //!   version, dialects, rules (with their ids) and laws (§3.3).
-//! - **malformed** — the bytes are not a document or not a log: a per-field
-//!   law, or a log law such as an id used twice (`broken`).
+//! - **malformed** — the bytes are not a document or not a log: a law of the
+//!   text, a per-field law, or a log law such as an id used twice (`broken`).
 //!
 //! `why` on a malformed answer is each engine's own wording; everything else
 //! is the same in both.
 
 use serde::Serialize;
 
-use crate::document::{BrokenLaw, CourseDocument, NotRunnable};
+use crate::document::{parse_document, BrokenLaw, NotRunnable};
 use crate::fold::{fold, EncodedState};
-use crate::observe::{broken_log_laws, Observation};
+use crate::observe::{broken_log_laws, parse_log};
 use crate::packs::Pack;
 
 #[derive(Debug, Clone, PartialEq, Serialize)]
@@ -33,10 +33,10 @@ pub enum Answer {
     },
 }
 
-/// Decode both, plan, check the log, fold, encode. Total: every input has an
+/// Parse both, plan, check the log, fold, encode. Total: every input has an
 /// answer, and nothing panics.
 pub fn run(packs: &[Pack], document_json: &str, log_json: &str) -> Answer {
-    let document: CourseDocument = match serde_json::from_str(document_json) {
+    let document = match parse_document(document_json) {
         Ok(d) => d,
         Err(e) => {
             return Answer::Malformed {
@@ -45,7 +45,7 @@ pub fn run(packs: &[Pack], document_json: &str, log_json: &str) -> Answer {
             }
         }
     };
-    let log: Vec<Observation> = match serde_json::from_str(log_json) {
+    let log = match parse_log(log_json) {
         Ok(l) => l,
         Err(e) => {
             return Answer::Malformed {

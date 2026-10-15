@@ -23,6 +23,12 @@
  * `rust/tests/decode.rs` runs the same files and must produce the
  * same verdicts. Nothing is shared between the two beyond the JSON.
  *
+ * A case carries its document as a value (`document`) or, where the law under
+ * test is one only the text can break, as the text itself (`document_text`),
+ * and its log likewise (`log` or `log_text`). A text goes to `parse_document`
+ * as it is written; a value goes to `decode_document`, and is also written
+ * out and parsed, because a lawful value's text must get the same verdict.
+ *
  * @see scripts/make-decode-corpus.ts — where the cases come from
  * @see SPEC.md §2.1
  */
@@ -33,8 +39,8 @@ import { readdirSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 import { PACKS } from '../src/index.ts'
-import { decode_document, plan } from '../src/document.ts'
-import { broken_log_laws, decode_log } from '../src/observe.ts'
+import { decode_document, parse_document, plan } from '../src/document.ts'
+import { broken_log_laws, decode_log, parse_log } from '../src/observe.ts'
 import { describe_issue } from '../src/run.ts'
 
 const CORPUS = join(import.meta.dirname, '../../corpus/decode')
@@ -59,12 +65,26 @@ const Case = Schema.Struct({
   name: Schema.String,
   why: Schema.String,
   expect: Expect,
-  document: Schema.Unknown,
+  /** The document as a value, or — for a law of the text — as its text. One of the two. */
+  document: Schema.optionalKey(Schema.Unknown),
+  document_text: Schema.optionalKey(Schema.String),
+  /** The log beside it, the same two ways. */
   log: Schema.optionalKey(Schema.Unknown),
+  log_text: Schema.optionalKey(Schema.String),
 })
 const decode_case = Schema.decodeUnknownSync(Case)
 const read_case = (file: string) =>
   decode_case(JSON.parse(readFileSync(join(CORPUS, file), 'utf8')))
+type TCase = ReturnType<typeof read_case>
+
+/** The case's document, read the way the case carries it. */
+const document_in = (kase: TCase) =>
+  kase.document_text === undefined
+    ? decode_document(kase.document)
+    : parse_document(kase.document_text)
+/** And its log. */
+const log_in = (kase: TCase) =>
+  kase.log_text === undefined ? decode_log(kase.log) : parse_log(kase.log_text)
 
 const files = readdirSync(CORPUS)
   .filter((f) => f.endsWith('.json'))
@@ -74,24 +94,44 @@ describe('the decode corpus', () => {
   it('exists', () => {
     // Every assertion below is inside a loop over these files, and a loop over
     // nothing passes. The same reason `the_corpus_exists` is a test in Rust.
-    // Forty-three today: ten accepts, sixteen rejects, seventeen refuses, six
-    // of the accepts judging a log. The count is exact: fewer is a file that
-    // went missing, and more is a file the generator no longer writes, which
-    // it never deletes.
+    // Fifty-four today: fourteen accepts, twenty-three rejects, seventeen
+    // refuses, eight of the accepts judging a log. The count is exact: fewer
+    // is a file that went missing, and more is a file the generator no longer
+    // writes, which it never deletes.
     const count = (verdict: string) =>
       files.filter((file) => read_case(file).expect.verdict === verdict).length
     assert.deepStrictEqual(
       [count('accepts'), count('rejects'), count('refuses'), files.length],
-      [10, 16, 17, 43],
+      [14, 23, 17, 54],
       'accepts, rejects, refuses, and the whole decode corpus',
     )
+    // Eleven of them carry a text: nine a document's, two a log's.
+    const carrying = (member: 'document_text' | 'log_text') =>
+      files.filter((file) => read_case(file)[member] !== undefined).length
+    assert.deepStrictEqual([carrying('document_text'), carrying('log_text')], [9, 2])
+  })
+
+  it('carries each document and each log one way, never both', () => {
+    for (const file of files) {
+      const kase = read_case(file)
+      assert.notStrictEqual('document' in kase, 'document_text' in kase, `${file}: the document`)
+      assert.isFalse('log' in kase && 'log_text' in kase, `${file}: the log`)
+    }
   })
 
   for (const file of files) {
     const kase = read_case(file)
 
     it(`${kase.name} — ${kase.why}`, () => {
-      const decoded = decode_document(kase.document)
+      const decoded = document_in(kase)
+      // A lawful value's text is the same file: written out and parsed, it
+      // gets the verdict the value got.
+      if (kase.document_text === undefined)
+        assert.strictEqual(
+          Result.isSuccess(parse_document(JSON.stringify(kase.document))),
+          Result.isSuccess(decoded),
+          'the document as a value and as its text are judged differently',
+        )
 
       if (kase.expect.verdict === 'rejects') {
         assert.isTrue(
@@ -120,8 +160,14 @@ describe('the decode corpus', () => {
         )
         const expect_log = kase.expect.log
         if (expect_log === undefined) return
-        assert.isTrue('log' in kase, 'the case judges a log and carries none')
-        const log = decode_log(kase.log)
+        assert.isTrue('log' in kase || 'log_text' in kase, 'the case judges a log and carries none')
+        const log = log_in(kase)
+        if (kase.log_text === undefined)
+          assert.strictEqual(
+            Result.isSuccess(parse_log(JSON.stringify(kase.log))),
+            Result.isSuccess(log),
+            'the log as a value and as its text are judged differently',
+          )
         if (expect_log.verdict === 'rejects') {
           assert.isTrue(
             Result.isFailure(log),
@@ -169,6 +215,66 @@ describe('the decode corpus', () => {
       )
     })
   }
+})
+
+/**
+ * `rejects` is one bit here too, and a text case could be rejected for a typo
+ * in its own edit. So each is held to the law it is about, by the sentence —
+ * and to the other half of the claim: that the value `JSON.parse` makes of it
+ * is a lawful document, so nothing but the text could have shown it.
+ */
+describe('a text that breaks a law of the text', () => {
+  const TWICE = 'a member is named twice'
+  const HALF = 'a string holds half a surrogate pair'
+  /** Why a read failed, in the decoder's words. One read at a time: a document and a log are two types. */
+  const why_not = <A>(read: Result.Result<A, Parameters<typeof describe_issue>[0]>): string =>
+    Result.isFailure(read) ? describe_issue(read.failure) : 'nothing: it decoded'
+  const rejected_for = (kase: TCase): string =>
+    kase.log_text === undefined ? why_not(document_in(kase)) : why_not(log_in(kase))
+  const cases: ReadonlyArray<readonly [string, string]> = [
+    ['rejects-a-version-written-twice', `${TWICE}: "pace-geojson", line 1`],
+    ['rejects-a-measure-with-a-member-twice', `${TWICE}: "distance_m", line 1`],
+    ['rejects-a-rule-with-a-parameter-twice', `${TWICE}: "within_ms", line 1`],
+    ['rejects-a-foreign-member-written-twice', `${TWICE}: "x:note", line 1`],
+    ['rejects-a-name-written-twice-under-an-escape', `${TWICE}: "pace:way", line 1`],
+    ['rejects-a-string-with-half-a-surrogate-pair', `${HALF}: "evt_\\\\ud83d", line 1`],
+    ['rejects-a-foreign-string-with-half-a-surrogate-pair', `${HALF}: "\\\\ude00", line 1`],
+    ['rejects-a-log-with-a-member-twice', `${TWICE}: "entrant", line 1`],
+    ['rejects-a-log-with-half-a-surrogate-pair', `${HALF}: "ent_\\\\ud83d", line 1`],
+  ]
+
+  it('is every text case that is rejected', () => {
+    const rejected = files
+      .map(read_case)
+      .filter(
+        (kase) =>
+          (kase.document_text !== undefined && kase.expect.verdict === 'rejects') ||
+          kase.log_text !== undefined,
+      )
+      .map((kase) => kase.name)
+    assert.deepStrictEqual(rejected, cases.map(([name]) => name).toSorted())
+  })
+
+  for (const [name, why] of cases)
+    it(`${name} is rejected for that law, and its value hides it`, () => {
+      const kase = read_case(`${name}.json`)
+      assert.strictEqual(rejected_for(kase), why)
+      // What a host that parses first is left holding: a document, and a log.
+      const text = kase.log_text ?? kase.document_text ?? ''
+      const value: unknown = JSON.parse(text)
+      const lawful =
+        kase.log_text === undefined
+          ? Result.isSuccess(decode_document(value))
+          : Result.isSuccess(decode_log(value))
+      assert.isTrue(lawful, 'the value does not decode: the edit broke more')
+    })
+
+  it('a pair written whole, and an escaped backslash, are text', () => {
+    const kase = read_case('accepts-a-text-with-a-whole-pair-and-an-escaped-backslash.json')
+    const decoded = document_in(kase)
+    if (Result.isFailure(decoded)) return assert.fail(describe_issue(decoded.failure))
+    assert.strictEqual(decoded.success['pace:event'], 'evt_\u{1f600}_\\ud83d')
+  })
 })
 
 /**

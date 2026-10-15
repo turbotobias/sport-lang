@@ -195,6 +195,13 @@ impl Observation {
     }
 }
 
+/// A log from **its text**: `SPEC.md` §4.2's `parse_log`, the laws of the
+/// text ([`crate::text`]) included. `serde_json::from_str` alone is the
+/// per-field rules and not the text's.
+pub fn parse_log(text: &str) -> Result<Vec<Observation>, String> {
+    crate::text::read(text)
+}
+
 /// Everything true of a log that a per-field check cannot express — §2.3.
 ///
 /// One law: **an id is unique within a log.** It is the second sort key and

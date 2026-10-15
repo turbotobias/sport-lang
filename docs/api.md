@@ -21,10 +21,11 @@ or later runs the sources directly.
 import { readFileSync } from 'node:fs'
 import { PACKS, run } from 'pace-geojson'
 
-const read = (path: string): unknown => JSON.parse(readFileSync(path, 'utf8'))
+const read = (path: string): string => readFileSync(path, 'utf8')
 const say = (line: string) => process.stdout.write(`${line}\n`)
 
-// Decode both files, plan the rules, check the log, fold. Three answers and no fourth.
+// Parse both files, plan the rules, check the log, fold. Three answers and no fourth.
+// Each file goes in as its text: a value `JSON.parse` made can no longer show a member named twice.
 const answer = run(PACKS, read('examples/10k/document.json'), read('examples/10k/log.json'))
 
 if (answer.kind === 'malformed') {
@@ -55,23 +56,31 @@ A document missing `pace:measure.ascent_threshold_m` prints
 ### TypeScript calls
 
 From `pace-geojson` (each module also at `pace-geojson/<module>`, such as `pace-geojson/fold` or
-`pace-geojson/packs/athletics`). Documents and logs go in as parsed JSON (`unknown`); a `Result` is
-Effect's; every instant is a `DateTime.Utc`, made with
-`DateTime.makeUnsafe('2027-05-02T07:30:00Z')`.
+`pace-geojson/packs/athletics`). A document or a log goes in as **its text** (`parse_document`,
+`parse_log`, and `run` handed strings), which is the only form every law can be checked on, or
+as a value a JSON parser already made (`decode_document`, `decode_log`, and `run` handed
+anything else), which cannot show that its text named a member twice. A `Result` is Effect's;
+every instant is a `DateTime.Utc`, made with `DateTime.makeUnsafe('2027-05-02T07:30:00Z')`.
 
 ```text
 the whole call
   run(packs, document, log)            -> Answer: ran | refused | malformed, as below
+                                          each of the two as its text, or as a parsed value
   describe_issue(issue)                -> string: a decode failure, in words
   PACKS                                   the four dialects this build ships
 
 the four calls of SPEC §4, and the log's
-  decode_document(json)                -> Result<CourseDocument, Issue>   the per-field laws
+  parse_document(text)                 -> Result<CourseDocument, Issue>   the text's laws, then the per-field laws
   broken_laws(document)                -> {law, what}[]                   the document-only laws
   plan(document, packs)                -> Result<KernelRule[], NotRunnable>
   fold(rules, log)                     -> EntrantState[]                  the working state
-  decode_log(json)                     -> Result<Observation[], Issue>
+  parse_log(text)                      -> Result<Observation[], Issue>
   broken_log_laws(log)                 -> {law, what}[]                   an id used twice
+
+from a value a JSON parser already made: everything but the text's laws
+  decode_document(json)                -> Result<CourseDocument, Issue>
+  decode_log(json)                     -> Result<Observation[], Issue>
+  broken_text_law(text)                -> {law, what, line} | null        the text's laws alone
   encode_state(state)                  -> the 13 members of SPEC §4.1, as run gives them
   total_ms(state)                      -> number | null
 
@@ -89,6 +98,12 @@ before race day
   slowest_clear_pace(document, rules, start_at)
                                        -> s/km | null   even pace, no climb; 1500 is any pace
 
+drawing a course
+  summary_of(document, steps = 48)     -> {length_m, stated_m, ascent_m, descent_m, heights,
+                                           ground: [from_m, to_m, material][], places}
+  geodesic_m(from, to)                 -> metres on the WGS84 ellipsoid, [lon, lat] positions
+  alongs_m(line)                       -> each position's metres along the line
+
 making documents and logs
   document_of(course_file, options)    -> Result<CourseDocument, Issue>   see mats_along, laps_along
   bridge(reads, document, {bindings, drifts, debounce_ms})
@@ -97,9 +112,11 @@ making documents and logs
                                        -> {observations, refused}   track: [lat, lon, seconds][]
 ```
 
-- **`run`** decodes both files, plans the rules, checks the log and folds: three answers and no
+- **`run`** parses both files, plans the rules, checks the log and folds: three answers and no
   fourth. `malformed` is not a document or not a log, with what was expected and where (the quick
   start above shows one); `refused` is readable but not runnable; `ran` carries the states.
+  Hand it the files' text. A string is always read as text; anything else is read as a value, and
+  a value named `"pace-geojson"` twice in its file runs as whichever its parser kept.
 - **`fold_until`** is the standings at an instant: the fold over the observations stamped at or
   before it. `positions_at` interpolates each entrant between their two reads either side of the
   instant (`between: true`) and places them by `along_m`, never by coordinates.
@@ -116,6 +133,12 @@ making documents and logs
   bounded in time, one measured clock offset per device, a burst of reads collapsed to one
   observation stamped at the first sighting, and an unusable read returned _stranded_, with a
   reason, never dropped. It is not part of the conformance surface.
+- **`summary_of`** is a course at a glance, from its document alone: what a list row, a map's
+  preview or a share card draws. Each vertex's distance is measured from the geometry and laid on
+  the document's own metres (a line the path runs whole is stretched to its end; one run in part is
+  read in its measured metres); heights only where every position carries one; ground only where
+  the `surface:` segments cover the course; the climb only as `pace:measure` states it. It is not
+  part of the conformance surface.
 - **`self_timed`** turns a recorded track (`[lat, lon, seconds]` per sample, latitude first) into
   one crossing of every place in the document, stamped where the runner had covered that share of
   their own track. It refuses a track whose length is more than 15 % off the course's; it does
@@ -180,22 +203,27 @@ another crate, depend on it by path or git until it is published
 
 | call | does |
 | --- | --- |
-| `document::CourseDocument` | the decoded document; `serde_json::from_str` is the per-field laws |
+| `document::parse_document(text)` | a document from its text: the text's laws, then the per-field laws |
+| `document::CourseDocument` | the decoded document. `serde_json::from_str` alone is the per-field laws and not the text's: it refuses a repeated member only where it has a field of that name |
 | `CourseDocument::plan(&packs::all())` | the kernel rules, or every reason the document cannot be run |
 | `CourseDocument::broken_laws()` | the cross-document laws |
+| `observe::parse_log(text)` | a log from its text, the same way |
 | `observe::Observation` | one log row; its `t` is an `observe::Instant`, its `source` the `SourceKind` enum |
 | `observe::broken_log_laws(&log)` | an id used twice |
 | `fold::fold(&rules, &log)` | every entrant's state |
 | `fold::fold_until(&rules, &log, t_ms)` | the standings at a moment |
 | `fold::EntrantState::encoded()` | the 13 members of [SPEC §4.1](../SPEC.md#41-the-entrant-state) |
+| `text::broken_text_law(text)` | the text's laws alone: a member named twice, half a surrogate pair |
 | `run::run(&packs::all(), document_json, log_json)` | the whole call in one, answering as the WebAssembly build does |
+| `CourseDocument::summary(steps)` | a course at a glance, as `summary_of` reads it; `summary::SUMMARY_HEIGHTS` is 48 |
+| `geodesic::geodesic_m(from, to)`, `geodesic::alongs_m(line)` | metres on the WGS84 ellipsoid, `[lon, lat]` positions |
 
 A dialect's `Pack` lists in `placed` the kinds that need a place.
 
 ## WebAssembly
 
 The crate `pace-geojson-wasm` ([wasm/](../wasm)) is the Rust engine for a browser or Node, about
-430 KB, not yet run through `wasm-opt` (the optimiser the toolchain bundles refuses the module). It
+480 KB, not yet run through `wasm-opt` (the optimiser the toolchain bundles refuses the module). It
 has two functions, both JSON strings in and out: the same bytes the corpus is written in.
 `dialects()` answers the dialect ids it ships. `run(document_json, log_json)` answers one of three,
 the same three the TypeScript `run` gives, member for member:

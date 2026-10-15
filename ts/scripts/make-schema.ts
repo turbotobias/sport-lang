@@ -18,11 +18,12 @@
  *
  * ## Three decisions the generator does not make on its own
  *
- * - **Open objects.** `additionalProperties: true`, where the generator's
- *   default is `false`. Both engines ignore members they do not know — Effect
- *   drops excess keys on decode, serde skips unknown fields — and GeoJSON gives
- *   every object foreign members (`bbox`, a feature's top-level `id`, a vendor's
- *   own). A closed schema would reject files both engines read.
+ * - **Open objects.** `onExcessProperty: 'ignore'`, said outright though it
+ *   is the generator's default since Effect 4.0. Both engines ignore members
+ *   they do not know — Effect drops excess keys on decode, serde skips unknown
+ *   fields — and GeoJSON gives every object foreign members (`bbox`, a
+ *   feature's top-level `id`, a vendor's own). A closed schema would reject
+ *   files both engines read.
  * - **The instant says what it is.** `Instant` (`src/kernel.ts`) is a checked
  *   string decoded to a `DateTime.Utc`, and the generator emits its encoded
  *   side: the string and its pattern, `YYYY-MM-DDTHH:MM:SS[.sss]Z` (SPEC.md
@@ -120,7 +121,7 @@ const emit = (
   file: string,
   head: { readonly title: string; readonly description: string },
 ): JsonSchema.JsonSchema => {
-  const document = Schema.toJsonSchemaDocument(schema, { additionalProperties: true })
+  const document = Schema.toJsonSchemaDocument(schema, { onExcessProperty: 'ignore' })
   return {
     $schema: JsonSchema.META_SCHEMA_URI_DRAFT_2020_12,
     $id: `${BASE}${file}`,

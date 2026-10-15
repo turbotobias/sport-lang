@@ -18,12 +18,19 @@
 //! sentences are compared as a sorted **multiset**: a law listed once per place
 //! that broke it is a multiplicity both implementations have to agree on.
 //!
+//! A case carries its document as a value (`document`) or, where the law under
+//! test is one only the text can break, as the text itself (`document_text`),
+//! and its log likewise (`log` or `log_text`). A text goes to `parse_document`
+//! as it is written; a value goes through serde, and is also written out and
+//! parsed, because a lawful value's text must get the same verdict.
+//!
 //! Nothing here is shared with the reference beyond the JSON files.
 
 use pace_geojson::{
-    document::CourseDocument,
-    observe::{broken_log_laws, Observation},
+    document::{parse_document, CourseDocument},
+    observe::{broken_log_laws, parse_log, Observation},
     packs,
+    text::{HALF_A_PAIR, NAMED_TWICE},
 };
 use serde::Deserialize;
 
@@ -63,9 +70,50 @@ struct Case {
     name: String,
     why: String,
     expect: Expect,
-    document: serde_json::Value,
+    /// The document as a value, or — for a law of the text — as its text. One of the two.
+    #[serde(default)]
+    document: Option<serde_json::Value>,
+    #[serde(default)]
+    document_text: Option<String>,
+    /// The log beside it, the same two ways.
     #[serde(default)]
     log: Option<serde_json::Value>,
+    #[serde(default)]
+    log_text: Option<String>,
+}
+
+impl Case {
+    /// The case's document, read the way the case carries it — and, for a
+    /// value, whether its text got the same verdict.
+    fn document(&self) -> (Result<CourseDocument, String>, bool) {
+        match (&self.document, &self.document_text) {
+            (Some(value), None) => {
+                let decoded = serde_json::from_value::<CourseDocument>(value.clone()).map_err(|e| e.to_string());
+                let as_text = parse_document(&value.to_string());
+                let same = decoded.is_ok() == as_text.is_ok();
+                (decoded, same)
+            }
+            (None, Some(text)) => (parse_document(text), true),
+            _ => (
+                Err("the case carries its document both ways, or neither".to_string()),
+                false,
+            ),
+        }
+    }
+
+    /// And its log, or `None` when it carries none.
+    fn log(&self) -> Option<(Result<Vec<Observation>, String>, bool)> {
+        match (&self.log, &self.log_text) {
+            (Some(value), None) => {
+                let decoded = serde_json::from_value::<Vec<Observation>>(value.clone()).map_err(|e| e.to_string());
+                let same = decoded.is_ok() == parse_log(&value.to_string()).is_ok();
+                Some((decoded, same))
+            }
+            (None, Some(text)) => Some((parse_log(text), true)),
+            (None, None) => None,
+            (Some(_), Some(_)) => Some((Err("the case carries its log both ways".to_string()), false)),
+        }
+    }
 }
 
 fn corpus() -> Vec<(String, Case)> {
@@ -86,17 +134,21 @@ fn corpus() -> Vec<(String, Case)> {
 #[test]
 fn the_corpus_exists() {
     // Every assertion below is inside a loop over these files, and a loop over
-    // nothing passes. Forty-three today — ten accepts, sixteen rejects,
-    // seventeen refuses, six of the accepts judging a log — and the count is
-    // exact: fewer is a file that went missing, and more is a file the
-    // generator no longer writes, which it never deletes.
+    // nothing passes. Fifty-four today — fourteen accepts, twenty-three
+    // rejects, seventeen refuses, eight of the accepts judging a log — and the
+    // count is exact: fewer is a file that went missing, and more is a file
+    // the generator no longer writes, which it never deletes.
     let cases = corpus();
     let count = |verdict: &str| cases.iter().filter(|(_, case)| case.expect.verdict == verdict).count();
     assert_eq!(
         (count("accepts"), count("rejects"), count("refuses"), cases.len()),
-        (10, 16, 17, 43),
+        (14, 23, 17, 54),
         "accepts, rejects, refuses, and the whole decode corpus"
     );
+    // Eleven of them carry a text: nine a document's, two a log's.
+    let documents = cases.iter().filter(|(_, case)| case.document_text.is_some()).count();
+    let logs = cases.iter().filter(|(_, case)| case.log_text.is_some()).count();
+    assert_eq!((documents, logs), (9, 2), "the cases that carry a text");
 }
 
 /// Every case, and **every** disagreement rather than the first.
@@ -112,7 +164,13 @@ fn every_document_gets_the_verdict_the_corpus_names() {
 
     for (_path, case) in corpus() {
         checked += 1;
-        let decoded: Result<CourseDocument, _> = serde_json::from_value(case.document.clone());
+        let (decoded, same_as_text) = case.document();
+        if !same_as_text {
+            problems.push(format!(
+                "{}: the document as a value and as its text are judged differently",
+                case.name
+            ));
+        }
 
         if case.expect.verdict == "rejects" {
             if decoded.is_ok() {
@@ -144,7 +202,7 @@ fn every_document_gets_the_verdict_the_corpus_names() {
                     ));
                 }
                 if let Some(want) = &case.expect.log {
-                    judge_log(&case.name, want, case.log.as_ref(), &mut problems);
+                    judge_log(&case.name, want, case.log(), &mut problems);
                 }
             }
             Err(not_runnable) => {
@@ -213,12 +271,22 @@ fn every_document_gets_the_verdict_the_corpus_names() {
 
 /// The log beside an accepting document: rejected at parse, refused by a log
 /// law, or accepted — the same three verdicts as the document's.
-fn judge_log(name: &str, want: &LogExpect, log: Option<&serde_json::Value>, problems: &mut Vec<String>) {
-    let Some(log) = log else {
+fn judge_log(
+    name: &str,
+    want: &LogExpect,
+    log: Option<(Result<Vec<Observation>, String>, bool)>,
+    problems: &mut Vec<String>,
+) {
+    let Some((log, same_as_text)) = log else {
         problems.push(format!("{name}: judges a log and carries none"));
         return;
     };
-    match serde_json::from_value::<Vec<Observation>>(log.clone()) {
+    if !same_as_text {
+        problems.push(format!(
+            "{name}: the log as a value and as its text are judged differently"
+        ));
+    }
+    match log {
         Err(e) => {
             if want.verdict != "rejects" {
                 problems.push(format!(
@@ -245,10 +313,90 @@ fn judge_log(name: &str, want: &LogExpect, log: Option<&serde_json::Value>, prob
     }
 }
 
+/// One case, by its name.
+fn case_of(name: &str) -> Case {
+    let found = corpus().into_iter().find(|(_, case)| case.name == name);
+    found.unwrap_or_else(|| panic!("the corpus has no {name}")).1
+}
+
 /// One case's document, by the case's name.
 fn document_of(name: &str) -> serde_json::Value {
-    let found = corpus().into_iter().find(|(_, case)| case.name == name);
-    found.unwrap_or_else(|| panic!("the corpus has no {name}")).1.document
+    case_of(name)
+        .document
+        .unwrap_or_else(|| panic!("{name} carries no document as a value"))
+}
+
+/// `rejects` is one bit here too, and a text case could be rejected for a typo
+/// in its own edit. So each is held to the law it is about, by the sentence —
+/// and to the other half of the claim: that the value a parser makes of it is
+/// lawful, so nothing but the text could have shown it.
+#[test]
+fn a_text_that_breaks_a_law_of_the_text_is_rejected_for_that_law() {
+    let cases = [
+        ("rejects-a-version-written-twice", NAMED_TWICE, "pace-geojson"),
+        ("rejects-a-measure-with-a-member-twice", NAMED_TWICE, "distance_m"),
+        ("rejects-a-rule-with-a-parameter-twice", NAMED_TWICE, "within_ms"),
+        ("rejects-a-foreign-member-written-twice", NAMED_TWICE, "x:note"),
+        ("rejects-a-name-written-twice-under-an-escape", NAMED_TWICE, "pace:way"),
+        (
+            "rejects-a-string-with-half-a-surrogate-pair",
+            HALF_A_PAIR,
+            "evt_\\\\ud83d",
+        ),
+        (
+            "rejects-a-foreign-string-with-half-a-surrogate-pair",
+            HALF_A_PAIR,
+            "\\\\ude00",
+        ),
+        ("rejects-a-log-with-a-member-twice", NAMED_TWICE, "entrant"),
+        ("rejects-a-log-with-half-a-surrogate-pair", HALF_A_PAIR, "ent_\\\\ud83d"),
+    ];
+
+    // Every text case that is rejected is in that list, so a new one cannot go unheld.
+    let mut rejected: Vec<String> = corpus()
+        .into_iter()
+        .filter(|(_, case)| {
+            (case.document_text.is_some() && case.expect.verdict == "rejects") || case.log_text.is_some()
+        })
+        .map(|(_, case)| case.name)
+        .collect();
+    rejected.sort();
+    let mut named: Vec<&str> = cases.iter().map(|(name, _, _)| *name).collect();
+    named.sort_unstable();
+    assert_eq!(rejected, named);
+
+    for (name, law, what) in cases {
+        let case = case_of(name);
+        let why = match (&case.document_text, &case.log_text) {
+            (_, Some(text)) => parse_log(text).expect_err("the log parsed"),
+            (Some(text), None) => parse_document(text).expect_err("the document parsed"),
+            (None, None) => panic!("{name} carries no text"),
+        };
+        assert_eq!(why, format!("{law}: \"{what}\", line 1"), "{name}");
+
+        // What a host that parses first is left holding: serde_json's `Value`
+        // keeps the last of two members, as `JSON.parse` does.
+        let text = case.log_text.as_ref().or(case.document_text.as_ref()).expect("a text");
+        if law == NAMED_TWICE {
+            let value: serde_json::Value = serde_json::from_str(text).expect("it is JSON");
+            let lawful = match case.log_text {
+                Some(_) => serde_json::from_value::<Vec<Observation>>(value).is_ok(),
+                None => serde_json::from_value::<CourseDocument>(value).is_ok(),
+            };
+            assert!(lawful, "{name}: the value does not decode: the edit broke more");
+        } else {
+            // Half a pair has no value here at all: this language's strings cannot hold one.
+            assert!(serde_json::from_str::<serde_json::Value>(text).is_err(), "{name}");
+        }
+    }
+}
+
+/// A pair written whole, and an escaped backslash before the same letters, are text.
+#[test]
+fn a_whole_pair_and_an_escaped_backslash_are_text() {
+    let case = case_of("accepts-a-text-with-a-whole-pair-and-an-escaped-backslash");
+    let document = parse_document(case.document_text.as_deref().expect("a text")).expect("it parses");
+    assert_eq!(document.event, "evt_\u{1f600}_\\ud83d");
 }
 
 /// Why a document was rejected, in serde's words.

@@ -113,6 +113,35 @@ const on_line = (line: TCourseLine, m: number): readonly [number, number, number
   return at_along(line, Math.max(0, m))
 }
 
+/**
+ * Where a place is: `at_along`, but the place at the **end of the whole way**
+ * — the finish — is at the line's end, not back at its start. On a loop the
+ * two are one spot and nothing moves; on a line that ends somewhere else than
+ * it began, the finish is where the line ends. `at_along` wraps an exact
+ * multiple to the start, which put the finish of every such course on its
+ * own start.
+ *
+ * Only the end of the way. A place a whole line along with laps still to run
+ * — a lap, the next lap's corral — is where `at_along` has it: where the next
+ * lap begins.
+ *
+ * @param laps how many times the line is run: the way is that many lines long.
+ */
+export const place_along = (
+  line: TCourseLine,
+  m: number,
+  laps = 1,
+): readonly [number, number, number | null] => {
+  const last = line[line.length - 1]
+  const total = last?.[3] ?? 0
+  if (last === undefined || total <= 0) return at_along(line, m)
+  // A product of the line's length and a lap count is not always that length
+  // to the last bit: a thousandth of a millimetre either way is the end.
+  return Math.abs(m - total * Math.max(1, laps)) < 1e-6
+    ? [last[0], last[1], last[2]]
+    : at_along(line, m)
+}
+
 const position = (p: readonly [number, number, number | null]): ReadonlyArray<number> =>
   p[2] === null ? [p[0], p[1]] : [p[0], p[1], p[2]]
 
@@ -246,7 +275,7 @@ export const document_of = (course: TCourseFile, options: TBuildOptions) => {
       geometry: { type: 'LineString', coordinates: geometry },
     },
     ...options.places.map((place) => {
-      const at = at_along(course.line, place.along_m)
+      const at = place_along(course.line, place.along_m, laps)
       return {
         type: 'Feature',
         properties: {

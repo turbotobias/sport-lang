@@ -37,7 +37,8 @@ corpus is normative.
 | corpus | holds |
 | --- | --- |
 | [corpus/conformance/](../corpus/conformance) | 19 cases, 104 entrant states (11 by hand, 8 generated), reaching every kind of every dialect. Each is `{name, why, document, log, expect[]}`; every entrant's `standing, total_ms, adjustment_ms, awards, laps` must match, none extra and none missing |
-| [corpus/decode/](../corpus/decode) | 43 cases: 10 accept, 16 reject, 17 refuse, each with its verdict and reasons; six accepted documents carry a log with its own verdict (1 accepted, 4 rejected, 1 refused) |
+| [corpus/decode/](../corpus/decode) | 54 cases: 14 accept, 23 reject, 17 refuse, each with its verdict and reasons; eight accepted documents carry a log with its own verdict (1 accepted, 6 rejected, 1 refused), and eleven cases carry a file as its text: ten for the two laws only a text can break, one for a number written with more digits than a double holds |
+| [corpus/summary/](../corpus/summary) | 8 cases: a document built from a synthetic course and the summary the reference reads off it (`summary_of`): laps of one line, a line with no heights, ground in thirds, ground with a gap, a material outside the family, a 500 km ride, twelve steps. Both engines read every one; their 380 heights agree to the bit |
 | [corpus/courses/](../corpus/courses) | 7 synthetic courses in open sea near 0° N 0° E, the inputs to the generators in [ts/scripts/](../ts/scripts) |
 
 Two engines pass all of it: one in TypeScript, and one in Rust written from SPEC.md and the corpus,
@@ -51,6 +52,13 @@ temperature, through both engines and compares every member of every state and e
 **44 fields, 1 100 entrant states, 0 disagreements** ([ts/test/differential.test.ts](../ts/test/differential.test.ts)).
 A second sweep damages one lawful document and log 176 ways (every member left out in turn, an
 offset, an impossible day, a repeated id); both engines give the same verdict and reason on each.
+A third writes the same two files out as text with every member named twice and every string cut
+to half a surrogate pair, 419 texts in all: each is malformed in both engines, for the same law.
+A fourth writes numbers with more digits than a double holds — 1 800 decimals through a rule's
+parameter, 400 water temperatures between a legal limit and the next double above it — and both
+engines give the same answer on each, to the byte.
+Where the engines are known to read a file differently, the same test file holds each one
+([SPEC §5a](../SPEC.md#5a-two-engines-one-author)).
 
 </details>
 

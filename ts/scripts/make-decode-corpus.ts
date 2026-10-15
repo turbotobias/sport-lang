@@ -41,6 +41,16 @@
  * §2.3's, a member left out) and `refuses` (it decodes and breaks a log law:
  * an id used twice). A log is only judged beside a document that accepts.
  *
+ * ## And the text
+ *
+ * A case in the corpus is JSON, so its `document` is a value — and a value
+ * cannot say that its text named a member twice, because no JSON writer will
+ * write one that does. The laws of the text (SPEC.md §2) are about exactly
+ * that, so a case that tests one carries **`document_text`** in place of
+ * `document`, or **`log_text`** in place of `log`: the file as a string, to be
+ * parsed as it is written. The generator serialises the mutated base and then
+ * edits the characters, once, so the diff is still one thing.
+ *
  * ## These are mutations of one valid document, on purpose
  *
  * Every case is {@link BASE} with exactly one thing wrong, so the diff between
@@ -224,7 +234,24 @@ type TCase = {
   readonly mutate: (doc: TJson) => void
   /** A log to judge beside the document, changed from {@link LOG}; absent for a document-only case. */
   readonly log?: (log: Array<TJson>) => void
+  /**
+   * An edit to the document's text, for a law only the text can break: the
+   * case then carries `document_text` and no `document`.
+   */
+  readonly text?: (text: string) => string
+  /** The same for the log: the case then carries `log_text` and no `log`. */
+  readonly log_text?: (text: string) => string
 }
+
+/**
+ * `text` with its one `was` replaced by `now`.
+ *
+ * Exactly one, or the text comes back unchanged and the writer below stops:
+ * an edit that matched nothing would write a lawful file into a case that
+ * says it is not, and one that matched twice would break two things.
+ */
+const once = (was: string, now: string) => (text: string) =>
+  text.split(was).length === 2 ? text.replace(was, () => now) : text
 
 const refuses = (
   laws: ReadonlyArray<string>,
@@ -672,7 +699,94 @@ const CASES: ReadonlyArray<TCase> = [
     },
   },
 
+  /* ── the text ──────────────────────────────────────────────────────────── */
+  {
+    name: 'accepts-a-text-with-a-whole-pair-and-an-escaped-backslash',
+    why: '§2 — a surrogate pair written as two escapes is one character, and a backslash written as an escape and followed by `ud83d` is a backslash and five letters. A reader that refuses every `\\ud83d` it sees refuses lawful text.',
+    expect: { verdict: 'accepts' },
+    mutate: () => {},
+    text: once('"pace:event":"evt_decode-base"', '"pace:event":"evt_\\ud83d\\ude00_\\\\ud83d"'),
+  },
+  {
+    name: 'accepts-the-largest-double-written-long',
+    why: '§1 — a number is the double nearest to what is written. `1.7976931348623158e308` has one digit more than the largest double and is nearer to it than to anything else, so it is the largest double: a number, and a document. A reader that estimates the nearest double instead calls this one out of range and the file malformed. No course climbs that far; the case is about reading a number, and it carries the file as text because a JSON writer would write the double its own shorter way.',
+    expect: { verdict: 'accepts' },
+    mutate: () => {},
+    text: once('"ascent_m":0,', '"ascent_m":1.7976931348623158e308,'),
+  },
+  {
+    name: 'rejects-a-version-written-twice',
+    why: '§2 — no object names a member twice. `"pace-geojson": 1` and then `"pace-geojson": 2` is lawful JSON: a reader whose parser keeps the first runs it as version 1, and one whose parser keeps the last refuses it as version 2. Neither. Only the text shows there were two, so it is the text that is not a document.',
+    expect: { verdict: 'rejects' },
+    mutate: () => {},
+    text: once('"pace-geojson":1', '"pace-geojson":1,"pace-geojson":2'),
+  },
+  {
+    name: 'rejects-a-measure-with-a-member-twice',
+    why: '§2 — at any depth. `distance_m` once as 1 000 and once as 10 000: the course would be as long as the parser says.',
+    expect: { verdict: 'rejects' },
+    mutate: () => {},
+    text: once('"distance_m":1000', '"distance_m":1000,"distance_m":10000'),
+  },
+  {
+    name: 'rejects-a-rule-with-a-parameter-twice',
+    why: '§2 — in a rule’s `params` too, which a reader keeps as free-form JSON until a dialect reads it, and where both engines once kept the last without a word. A cut-off written as ten minutes and again as one millisecond gates nobody or everybody.',
+    expect: { verdict: 'rejects' },
+    mutate: () => {},
+    text: once('"within_ms":600000', '"within_ms":600000,"within_ms":1'),
+  },
+  {
+    name: 'rejects-a-foreign-member-written-twice',
+    why: '§2 — a member this specification does not name is ignored (§2.1), and still may not be written twice. The law is about the text, so a reader checks it without knowing which members it will read; and a member foreign to this reader is not foreign to the next.',
+    expect: { verdict: 'rejects' },
+    mutate: () => {},
+    text: once(
+      '{"type":"FeatureCollection"',
+      '{"x:note":"first","x:note":"second","type":"FeatureCollection"',
+    ),
+  },
+  {
+    name: 'rejects-a-name-written-twice-under-an-escape',
+    why: '§2 — names are compared after their escapes are resolved. `"pace:way"` and `"pace:\\u0077ay"` are one name to every parser, so they are one name here: a reader comparing the characters as written sees two members and runs it.',
+    expect: { verdict: 'rejects' },
+    mutate: () => {},
+    text: once('"pace:way":null', '"pace:way":null,"pace:\\u0077ay":"way_other"'),
+  },
+  {
+    name: 'rejects-a-string-with-half-a-surrogate-pair',
+    why: '§2 — `\\ud83d` with no low half after it is not a character. A reader whose strings are UTF-16 holds it and one whose strings are Unicode cannot, so the same file was a document to one and not to the other.',
+    expect: { verdict: 'rejects' },
+    mutate: () => {},
+    text: once('"pace:event":"evt_decode-base"', '"pace:event":"evt_\\ud83d"'),
+  },
+  {
+    name: 'rejects-a-foreign-string-with-half-a-surrogate-pair',
+    why: '§2 — in any string, read or not. A reader that steps over a foreign member without looking inside it would run this file, and one that parses the whole text first would not.',
+    expect: { verdict: 'rejects' },
+    mutate: () => {},
+    text: once('{"type":"FeatureCollection"', '{"x:note":"\\ude00","type":"FeatureCollection"'),
+  },
+
   /* ── the log ───────────────────────────────────────────────────────────── */
+  {
+    name: 'rejects-a-log-with-a-member-twice',
+    why: '§2 — the log is a text too. An observation naming its `entrant` twice is one runner’s read to one parser and another’s to the next.',
+    expect: log_gets({ verdict: 'rejects' }),
+    mutate: () => {},
+    log: () => {},
+    log_text: once(
+      '"id":"obs_1","entrant":"ent_1"',
+      '"id":"obs_1","entrant":"ent_1","entrant":"ent_2"',
+    ),
+  },
+  {
+    name: 'rejects-a-log-with-half-a-surrogate-pair',
+    why: '§2 — an entrant whose id ends in half a pair is an entrant to one engine and a malformed log to the other.',
+    expect: log_gets({ verdict: 'rejects' }),
+    mutate: () => {},
+    log: () => {},
+    log_text: once('"id":"obs_1","entrant":"ent_1"', '"id":"obs_1","entrant":"ent_\\ud83d"'),
+  },
   {
     name: 'accepts-a-log-in-both-instant-shapes',
     why: '§2.3 — an instant with milliseconds and one without are the same shape, and a lawful log beside a lawful document is judged as neither.',
@@ -739,9 +853,25 @@ for (const kase of CASES) {
   document[`${ns}:name`] = kase.name
   const log = kase.log === undefined ? undefined : structuredClone([...LOG])
   if (log !== undefined) kase.log?.(log)
+  // A text case carries the file as a string, edited after it was written out.
+  const written = JSON.stringify(document)
+  const document_text = kase.text?.(written)
+  const log_written = JSON.stringify(log ?? [])
+  const log_text = kase.log_text?.(log_written)
+  if (document_text === written || log_text === log_written) {
+    process.stderr.write(`${kase.name}: its text edit matched nothing, or twice — not written\n`)
+    process.exitCode = 1
+    continue
+  }
   writeFileSync(
     join(OUT, `${kase.name}.json`),
-    render({ name: kase.name, why: kase.why, expect: kase.expect, document, log }),
+    render({
+      name: kase.name,
+      why: kase.why,
+      expect: kase.expect,
+      ...(document_text === undefined ? { document } : { document_text }),
+      ...(log_text === undefined ? { log } : { log_text }),
+    }),
   )
 }
 

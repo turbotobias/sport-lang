@@ -50,10 +50,12 @@ import * as SchemaTransformation from 'effect/SchemaTransformation'
  * logged. An offset is refused rather than converted: `07:50:00+02:00` is read
  * neither as 05:50 nor as 07:50, so no two readers can disagree about which it
  * was. `[0-9]` rather than `\d`, so the pattern means the same in a regex
- * engine whose `\d` matches every Unicode digit.
+ * engine whose `\d` matches every Unicode digit. And `u`, which changes
+ * nothing it matches and is what lets the JSON Schema carry it: Effect exports
+ * a pattern only when its RegExp is Unicode-aware.
  */
 export const INSTANT_PATTERN =
-  /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{3})?Z$/
+  /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(\.[0-9]{3})?Z$/u
 
 const leap = (year: number): boolean => (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0
 

@@ -66,11 +66,13 @@
     "laps": {
       "type": "integer",
       "minimum": 0,
+      "maximum": 9007199254740991,
       "description": "`finished` observations: one per lap line crossed, 1 for a finisher of a one-lap course."
     },
     "punches": {
       "type": "integer",
       "minimum": 0,
+      "maximum": 9007199254740991,
       "description": "`punched` observations."
     },
     "awards": {

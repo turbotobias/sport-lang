@@ -2,10 +2,11 @@
 import { readFileSync } from 'node:fs'
 import { PACKS, run } from 'pace-geojson'
 
-const read = (path: string): unknown => JSON.parse(readFileSync(path, 'utf8'))
+const read = (path: string): string => readFileSync(path, 'utf8')
 const say = (line: string) => process.stdout.write(`${line}\n`)
 
-// Decode both files, plan the rules, check the log, fold. Three answers and no fourth.
+// Parse both files, plan the rules, check the log, fold. Three answers and no fourth.
+// Each file goes in as its text: a value `JSON.parse` made can no longer show a member named twice.
 const answer = run(PACKS, read('examples/10k/document.json'), read('examples/10k/log.json'))
 
 if (answer.kind === 'malformed') {

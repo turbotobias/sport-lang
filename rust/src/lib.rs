@@ -22,7 +22,10 @@
 
 pub mod document;
 pub mod fold;
+pub mod geodesic;
 pub mod kernel;
 pub mod observe;
 pub mod packs;
 pub mod run;
+pub mod summary;
+pub mod text;

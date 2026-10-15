@@ -12,6 +12,7 @@
     "pace-geojson": {
       "type": "integer",
       "minimum": 1,
+      "maximum": 9007199254740991,
       "description": "The format version, a whole number from 1. This specification is version 1 (SPEC.md §7)."
     },
     "pace:id": {

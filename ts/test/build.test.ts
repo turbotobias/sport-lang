@@ -14,6 +14,7 @@ import * as Schema from 'effect/Schema'
 
 import {
   at_along,
+  place_along,
   document_of,
   DocumentRule,
   fold,
@@ -276,6 +277,73 @@ describe('provenance, when the course file came from somewhere', () => {
 
   it('falls back to the geodesic method when the file does not name one', () => {
     assert.strictEqual(origin('https://example.org/course.gpx')?.method, 'wgs84-geodesic-2d')
+  })
+})
+
+describe("place_along: the finish is at the line's end", () => {
+  // A line that ends somewhere else than it began: three points heading east, a kilometre in all.
+  const OPEN: TCourseFile = {
+    ...LOOP,
+    id: 'open-1000',
+    drawn_m: 1_000,
+    distance_m: 1_000,
+    line: [
+      [10, 50, null, 0],
+      [10.007, 50, null, 500],
+      [10.014, 50, null, 1_000],
+    ],
+  }
+  const finish_of = (course: TCourseFile, repeat: number): ReadonlyArray<number> => {
+    const built = document_of(course, {
+      id: `crs_${course.id}`,
+      event: `evt_${course.id}`,
+      way: null,
+      name: course.name,
+      dialects: [],
+      places: [
+        { id: 'start', kind: 'start', name: 'Start', along_m: 0 },
+        { id: 'finish', kind: 'finish', name: 'Finish', along_m: course.drawn_m * repeat },
+      ],
+      rules: [],
+      repeat,
+      stated_m: null,
+    })
+    assert.isTrue(Result.isSuccess(built))
+    if (!Result.isSuccess(built)) return []
+    const finish = built.success.features.find(
+      (feature) => feature.properties.role === 'point' && feature.properties.kind === 'finish',
+    )
+    return finish?.geometry.type === 'Point' ? finish.geometry.coordinates : []
+  }
+
+  it('the finish of a line that ends away from its start is where the line ends', () => {
+    assert.deepStrictEqual(place_along(OPEN.line, 1_000), [10.014, 50, null])
+    assert.deepStrictEqual(finish_of(OPEN, 1).slice(0, 2), [10.014, 50])
+    // Run three times, the finish is the end of the third: a product that is
+    // not the length to the last bit is still the end.
+    assert.deepStrictEqual(place_along(OPEN.line, 3 * 1_000.0000000001, 3), [10.014, 50, null])
+    assert.deepStrictEqual(finish_of(OPEN, 3).slice(0, 2), [10.014, 50])
+  })
+
+  it('a whole line along with laps still to run is where the next lap begins', () => {
+    // The end of lap one of three is the start of lap two: as `at_along` has it.
+    assert.deepStrictEqual(place_along(OPEN.line, 1_000, 3), at_along(OPEN.line, 1_000))
+    assert.deepStrictEqual(place_along(OPEN.line, 2_000, 3), [10, 50, null])
+  })
+
+  it('the start, and anywhere short of a whole line, are where at_along has them', () => {
+    assert.deepStrictEqual(place_along(OPEN.line, 0), [10, 50, null])
+    assert.deepStrictEqual(place_along(OPEN.line, 250), at_along(OPEN.line, 250))
+    assert.deepStrictEqual(place_along(OPEN.line, 1_250), at_along(OPEN.line, 250))
+  })
+
+  it('on a loop nothing moves: its end is its start', () => {
+    const first = LOOP.line[0]
+    const last = LOOP.line[LOOP.line.length - 1]
+    const at = place_along(LOOP.line, LOOP.drawn_m)
+    assert.closeTo(at[0], last?.[0] ?? 0, 1e-12)
+    assert.closeTo(at[0], first?.[0] ?? 0, 1e-6)
+    assert.closeTo(at[1], first?.[1] ?? 0, 1e-6)
   })
 })
 

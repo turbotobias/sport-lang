@@ -45,10 +45,11 @@ import * as Option from 'effect/Option'
 import * as Record from 'effect/Record'
 import * as Result from 'effect/Result'
 import * as Schema from 'effect/Schema'
-import { decodeUnknownResult } from 'effect/SchemaParser'
+import { decodeResult, decodeUnknownResult } from 'effect/SchemaParser'
 
 import type { TKernelRule } from './kernel.ts'
 import { compile, DocumentRule, dialect_of, type TPack, type TRefusal } from './pack.ts'
+import { JsonText } from './text.ts'
 
 /* ── stricter than GeoJSON, on purpose ───────────────────────────────────── */
 
@@ -254,6 +255,24 @@ export const CourseDocument = Schema.Struct({
 })
 export type TCourseDocument = typeof CourseDocument.Type
 
+/**
+ * A document from **its text**: SPEC.md §4.2's `parse_document`.
+ *
+ * The whole of what makes a file a document: it is JSON, it keeps the laws of
+ * the text (`text.ts` — no member named twice, no half of a surrogate pair),
+ * and its members keep the per-field laws. This is the call for a file.
+ */
+export const parse_document = decodeResult(JsonText.pipe(Schema.decodeTo(CourseDocument)))
+
+/**
+ * A document from a value some JSON parser already made: the per-field laws,
+ * and **not** the text's.
+ *
+ * A value cannot show that its text named a member twice — the parser kept one
+ * and the other is gone — so nothing here can check it. For a host that only
+ * ever has the value: an editor's own state, a row from a database that
+ * stores JSON. A host that has the file hands {@link parse_document} the text.
+ */
 export const decode_document = decodeUnknownResult(CourseDocument)
 export const encode_document = Schema.encodeSync(CourseDocument)
 
